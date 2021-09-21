@@ -1,0 +1,21 @@
+{
+    "name":"FileTRE for FUN",
+    "version":"0.1",
+    "description":"File Time Release Encryption for FUN mail system!",
+    "manifest_version":2,
+    "content_scripts":[
+        {
+            "matches":[
+                "https://webmail.fun.ac.jp/cgi-bin/htmlparse.cgi?html=frame.html",
+                "https://webmail.fun.ac.jp/cgi-bin/htmlparse.cgi?html=composerframe.html"
+            ],
+            "js":[
+                "sample.js"
+            ]
+        }
+    ],
+    "browser_action":{
+        "default_popup":"popup.html"
+    },
+    "content_security_policy":"script-src 'self' https://apis.google.com; object-src 'self'"
+}

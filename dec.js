@@ -9,14 +9,14 @@ let dec_file = async (dec_time) => {
         //Cstrに暗号化されたファイルを格納、getC関数で暗号化されたパスワードを格納。
         var Cstr2 = fdata.target.result.split(cut_str2);
         let P1 = new mcl.G1()
-        let P2 = new mcl.G2()
-        let S = new mcl.G1()
-        let R = new mcl.G2()
+        //let P2 = new mcl.G2()
+        //let S = new mcl.G1()
+        //let R = new mcl.G2()
 
         P1.setStr(Cstr2[1])
-        P2.setStr(Cstr2[2])
-        S.setStr(Cstr2[3])
-        R.setStr(Cstr2[4])
+        //P2.setStr(Cstr2[2])
+        //S.setStr(Cstr2[3])
+        //R.setStr(Cstr2[4])
 
         var Cstr = Cstr2[0].split(cut_str);
         var encKey = getC(Cstr[1], Cstr[2])
@@ -24,13 +24,13 @@ let dec_file = async (dec_time) => {
         time = time.replaceAll('/', '-')
 
         //復号
-        let AESkey = await decKeyByIBE(encKey, myID, time)
+        let AESkey = await decKeyByTRE(encKey, myID, time)
 
         var encfile = Cstr[0]
         var decrypted = CryptoJS.AES.decrypt(encfile, AESkey) //file type + file source.
             .toString(CryptoJS.enc.Latin1) // -> to Latin1
             //Latin1ってなんだよ
-
+        /*
         if (!/^data:/.test(decrypted)) {//check dataURL
             alert("あなた宛てのファイルではありません。")
             return false
@@ -39,7 +39,7 @@ let dec_file = async (dec_time) => {
         //署名検証
         let [msg, validity] = await verifySign(decrypted, P1, P2, S, R, srcID, time)
         window.alert(validity ? "〇有効〇" : "×無効×")
-
+        */
         //DLリンクを生成。
         if (validity == true) {
             const a = document.createElement("a")
@@ -55,19 +55,21 @@ let dec_file = async (dec_time) => {
     reader.readAsText(file)
 }
 
-let decKeyByIBE = async (encKey, myID, time) => {
+let decKeyByTRE = async (encKey, myID, time) => {
     let S_KEY = new mcl.G2()
     let data = await getSecretKey2(myID, time)
     for (let i = 0; i < S_KEY["a_"].length; i++) {
         S_KEY["a_"][i] = data["a_"][i]
     }
 
-    return IDdec(encKey, S_KEY).getStr()
+    return TIMEdec(encKey, S_KEY).getStr()
 }
-//よくわからないが、暗号化と逆のことすればいいんじゃね？
+//サーバ班との兼ね合いもあるが、IDが鍵取得に使われているのでこれをどうにかして除かないと...
+
+//Dec(m)=C2/H(e(Tt,C1))
 
 // Dec([U, v]) = v - h(e(U, sk))
-let IDdec = (c, sk) => {
+let TIMEdec = (c, sk) => {
     const U = new mcl.G1()
     const v = new mcl.Fr()
 
@@ -94,6 +96,7 @@ let IDdec = (c, sk) => {
 
     return:署名文
 */
+/*
 let verifySign = async (msg, P1, P2, S, R, P_KEY, time) => {
     try {
         let Ppub = new mcl.G2()
@@ -122,6 +125,7 @@ let verifySign = async (msg, P1, P2, S, R, P_KEY, time) => {
         return [msg, false]
     }
 }
+*/
 //署名検証かな？？
 //多分今回の場合いらない
 

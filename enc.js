@@ -18,9 +18,8 @@ let enc_file = (enc_time) => {
             S_KEY["a_"][i] = data["a_"][i]
         }//なぜか走らないが別に配列に入れてる、配列の要素名がa_なのはなぜ？
 
-        let [S, R] = generateSign(S_KEY, fdata.target.result, P1, P2, k)
+        //let [S, R] = generateSign(S_KEY, fdata.target.result, P1, P2, k)
         //下参照、なぜ暗号化なのに署名生成？
-
         const key = genAESkey() //mcl::Fr
         //なぜここでも鍵を作ってる？
         const encKey = await encKeyByTRE(enc_time, P1, key) //[IDdecに必要な情報, IDencされた鍵]
@@ -28,7 +27,7 @@ let enc_file = (enc_time) => {
         const encMsg = CryptoJS.AES.encrypt(fdata.target.result, key.getStr())
         //ここで中身の暗号化？
         var contents = encMsg + ',' + encKey
-            + '__' + P1.getStr() + '__' + P2.getStr() + '__' + S.getStr() + '__' + R.getStr()
+            + '__' + P1.getStr() //+ '__' + P2.getStr() + '__' + S.getStr() + '__' + R.getStr()
         //暗号化されたデータとパスワードを結合
         //↑パスワードだけじゃなくてパラメータも暗号化してね？
         var blob_content = new Blob([contents]) //文字列で扱えるように変換
@@ -55,13 +54,22 @@ let encKeyByTRE = async (enc_time, P1, AESkey) => {
         mpk["a_"][i] = data["a_"][i]
     }
 
-    return IDenc(enc_time, P1, mpk, AESkey)
+    return TIMEenc(enc_time, P1, mpk, AESkey)
 }
 //時間、公開パラメータ、謎？？？、AES鍵
 //MPKとは？？、予想：MasterPublicKey
 
+//Enc(m)=[xP, m*H(e(Pt,xKt))]=(C1,C2)
+//Kt=sPa
+//Pt=H(TIME)
+//x=random
+//P=eclipse
+//s=PKG,master key
+
+//なんで*が＋になっているのか不明
+
 // Enc(m) = [r P, m + h(e(r mpk, H(id)))]
-let IDenc = (time, P, mpk, m) => {
+let TIMEenc = (time, P, mpk, m) => {
     let a_ = new Uint32Array(mpk["a_"])
     //console.log("mpk", a_)
     //console.log(mpk)
@@ -104,7 +112,7 @@ Dec = Dec_mes(S_TIME, C1_enc, C2_enc);//復号
 
     return:署名文
 */
-
+/*
 let generateSign = (S_KEY, msg, P1, P2, k) => {
     const h2 = new mcl.Fr();
     const h3 = new mcl.Fr();
@@ -120,5 +128,6 @@ let generateSign = (S_KEY, msg, P1, P2, k) => {
     let S_G1 = mcl.mul(h2_h3, k_inv);
 
     return [S_G1, R_G2]
-}
+}*/
 //なにこれ？？？署名を生成してるっぽいけど...恐らく認証に使ってた可能性
+//どうやらP2は署名のみに必要なパラメータっぽい

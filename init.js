@@ -23,6 +23,10 @@ window.onload = () => {
 }
 //mclの読み込み
 
+let getJWT = () => {
+    return localStorage.getItem('jwt')
+}
+
 /*
 let getSign = (S_KEY, msg, P1, P2, k) => {
     const h2 = new mcl.Fr()

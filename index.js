@@ -1,7 +1,7 @@
 const dateshow = document.getElementById("showdate");
-const dateget = document.getElementById("date");
+const dateset = document.getElementById("date");
 dateshow.addEventListener("click", () => {
-    alert(datetrim(dateget.value));
+    alert(datetrim(dateset.value));
 });
 //入力された時刻がしっかりシステム側で処理されたかを確認
 
@@ -12,11 +12,12 @@ fileadd.addEventListener("click", () => {
 //リロードせずに続けてファイル選択するとおかしくなるので、ファイル選択ごとに初期化
 let filename;
 let file;
+let reader;
 //他場所でも使うのでグローバルに
 fileadd.addEventListener("change", () => {
     file = fileadd.files[0];
     //alert(file);
-    let reader = new FileReader();
+    reader = new FileReader();
     reader.readAsText(file);
     filename = file.name;
     let filetype = file.type;
@@ -32,12 +33,12 @@ fileadd.addEventListener("change", () => {
 
 const fileget = document.getElementById("encfileget");
 fileget.addEventListener("click", () => {
-    try {
+    //try {
         let file = fileadd.files[0];
         //alert(file);
-        let reader = new FileReader();
+        reader = new FileReader();
         reader.readAsText(file);
-        enc_file(datetrim(dateget.value));
+        enc_file(datetrim(dateset.value));
         /*
         reader.onload = ()=> {
             let blob = new Blob([reader.result], { type: file.type });
@@ -47,9 +48,9 @@ fileget.addEventListener("click", () => {
             downlink.click();
         }
         */
-    } catch (error) {
-        alert("ファイルを選択してください");
-    }
+    //} catch (error) {
+    //    alert("エラーが発生しました");
+    //}
 }
 )
 //入力されたファイルを処理してダウンロードする。
@@ -69,10 +70,10 @@ let datetrim = (date) => {
 }
 //JSで用意された日付入力機能は、YYYY-MM-DDThh:mmの形で出てくるので、処理に適する形であるYYYYMMDDhhmmに変換する
 
-let dateget = () =>{
-    let date=new Date();
-    let ans=date.getFullYear();
-    ans += (date.getMonth()+1) + date.getDate() + date.getHours() +date.getMinutes();
+let dateget = () => {
+    let date = new Date();
+    let ans = date.getFullYear();
+    ans += (date.getMonth() + 1) + date.getDate() + date.getHours() + date.getMinutes();
     return ans;
 }
 //現在の日付を上と同じ形で取得する。

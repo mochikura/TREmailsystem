@@ -20,16 +20,16 @@ let dec_file = async (dec_time) => {
 
         var Cstr = Cstr2[0].split(cut_str);
         var encKey = getC(Cstr[1], Cstr[2])
-        let time = document.getElementById("date").value
-        time = time.replaceAll('/', '-')
+        //let time = document.getElementById("date").value
+        //time = time.replaceAll('/', '-')
 
         //復号
-        let AESkey = await decKeyByTRE(encKey, myID, time)
+        let AESkey = await decKeyByTRE(encKey, time)
 
         var encfile = Cstr[0]
         var decrypted = CryptoJS.AES.decrypt(encfile, AESkey) //file type + file source.
             .toString(CryptoJS.enc.Latin1) // -> to Latin1
-            //Latin1ってなんだよ
+            //Latin1ってなんだよ→なにやら文字コードのことらしい
         /*
         if (!/^data:/.test(decrypted)) {//check dataURL
             alert("あなた宛てのファイルではありません。")
@@ -55,9 +55,9 @@ let dec_file = async (dec_time) => {
     reader.readAsText(file)
 }
 
-let decKeyByTRE = async (encKey, myID, time) => {
+let decKeyByTRE = async (encKey, time) => {
     let S_KEY = new mcl.G2()
-    let data = await getSecretKey2(myID, time)
+    let data = await getSecretKey2(time)
     for (let i = 0; i < S_KEY["a_"].length; i++) {
         S_KEY["a_"][i] = data["a_"][i]
     }

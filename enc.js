@@ -11,12 +11,18 @@ let enc_file = (enc_time) => {
         //setByCSRPNGは乱数を生成するらしい
         k.deserialize(k.serialize())
         //なんでシリアライズしたあとにデシリアライズしてるの？もとに戻るだけでは？
+        /*
         let P_KEY = enc_time//公開鍵
         let S_KEY = new mcl.G1()//秘密鍵、これを見るにG1は鍵を入れる？
         let data = await getSecretKey(P_KEY)//→getkey.js
         for (let i = 0; i < S_KEY["a_"].length; i++) {
             S_KEY["a_"][i] = data["a_"][i]
-        }//なぜか走らないが別に配列に入れてる、配列の要素名がa_なのはなぜ？
+        }
+        */
+        //なぜか走らないが別に配列に入れてる、配列の要素名がa_なのはなぜ？
+        //→長い文字列をa_で分割しているらしい
+        //でもS_KEYってやつ、署名にしか使ってないな？
+        //→じゃあ必要なのはgetPublickeyとgetSecretkey2だけになる
 
         //let [S, R] = generateSign(S_KEY, fdata.target.result, P1, P2, k)
         //下参照、なぜ暗号化なのに署名生成？
@@ -42,7 +48,7 @@ let enc_file = (enc_time) => {
         a.download = filename + '.encrypted';
         a.click();
     }
-    reader.readAsDataURL(file);
+    //reader.readAsDataURL(file);
     //ここでURLをfileに入れるのはなぜ？
 }
 
@@ -70,7 +76,7 @@ let encKeyByTRE = async (enc_time, P1, AESkey) => {
 
 // Enc(m) = [r P, m + h(e(r mpk, H(id)))]
 let TIMEenc = (time, P, mpk, m) => {
-    let a_ = new Uint32Array(mpk["a_"])
+    //let a_ = new Uint32Array(mpk["a_"])
     //console.log("mpk", a_)
     //console.log(mpk)
     const r = new mcl.Fr()

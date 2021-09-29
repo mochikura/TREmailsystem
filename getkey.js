@@ -38,6 +38,10 @@ let genAESkey = () => {
 //調べたところ、JWTをlocalstorageからとってきているのはセキュリティ上良くないことが判明
 //だけど、じゃあどうやって鍵作るよ？
 
+/*
+
+*/
+
 //でもこの鍵、何に使うの？？？マスター鍵ならわかるけど、2つも必要な理由が不明
 /*
 let getSecretKey = async(ID) => {
@@ -69,14 +73,14 @@ let getSecretKey = async(ID) => {
 //シリアライズ&デシリアライズの処理追加
 //上記と同様
 let getPublicKey = async(P1) => {
-    /*
+    
     let token = getJWT()
 
     if (token === null || typeof token === 'undefined') {
         console.log('token is none')
         return null
     }
-    */
+    
     let res = await axios.get('https://key.project15.tk/api/publickey', {
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -98,14 +102,12 @@ let getPublicKey = async(P1) => {
 //デシリアライズ処理追加&日時情報追加
 //上記と同様
 let getSecretKey2 = async(time) => {
-    /*
     let token = getJWT()
 
     if (token === null || typeof token === 'undefined') {
         console.log('token is none')
         return null
     }
-    */
     let res = await axios.get('https://key.project15.tk/api/secretkey2', {
         headers: {
             'Authorization': `Bearer ${token}`,

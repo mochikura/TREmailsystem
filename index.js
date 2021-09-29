@@ -1,3 +1,4 @@
+/*
 const dateshow = document.getElementById("showdate");
 const dateset = document.getElementById("date");
 dateshow.addEventListener("click", () => {
@@ -9,18 +10,21 @@ const fileadd = document.getElementById("encfile");
 fileadd.addEventListener("click", () => {
     fileadd.value = "";
 });
+*/
 //リロードせずに続けてファイル選択するとおかしくなるので、ファイル選択ごとに初期化
 let filename;
 let file;
 let reader;
+let filetype;
 //他場所でも使うのでグローバルに
+/*
 fileadd.addEventListener("change", () => {
     file = fileadd.files[0];
     //alert(file);
     reader = new FileReader();
     reader.readAsText(file);
     filename = file.name;
-    let filetype = file.type;
+    filetype = file.type;
     let filesize = file.size;
     reader.onload = () => {
         //document.getElementById("filebi").innerHTML = reader.result;
@@ -30,7 +34,8 @@ fileadd.addEventListener("change", () => {
     };
 });
 //入力されたファイルの情報を確認できる
-
+*/
+/*
 const fileget = document.getElementById("encfileget");
 fileget.addEventListener("click", () => {
     //try {
@@ -39,7 +44,7 @@ fileget.addEventListener("click", () => {
         reader = new FileReader();
         reader.readAsText(file);
         enc_file(datetrim(dateset.value));
-        /*
+        
         reader.onload = ()=> {
             let blob = new Blob([reader.result], { type: file.type });
             let downlink = document.createElement('a');
@@ -47,12 +52,12 @@ fileget.addEventListener("click", () => {
             downlink.download = file.name;
             downlink.click();
         }
-        */
+        
     //} catch (error) {
     //    alert("エラーが発生しました");
     //}
 }
-)
+)*/
 //入力されたファイルを処理してダウンロードする。
 //検証では、テキストファイル以外は不可能だった、他だとどうやるのかは要検証
 

@@ -6,16 +6,28 @@
     "content_scripts":[
         {
             "matches":[
-                "https://webmail.fun.ac.jp/cgi-bin/htmlparse.cgi?html=frame.html",
                 "https://webmail.fun.ac.jp/cgi-bin/htmlparse.cgi?html=composerframe.html"
             ],
             "js":[
-                "sample.js"
-            ]
+                "fileget.js",
+                "init.js",
+                "mcl.js",
+                "index.js",
+                "enc.js",
+                "dec.js",
+                "getkey.js",
+                "axios.js",
+                "js/crypto-js.js",
+                "js/aes.js"
+
+            ],
+            "run_at": "document_end",
+            "all_frames": true
         }
     ],
     "browser_action":{
         "default_popup":"popup.html"
     },
+    "web_accessible_resources":["fileget.js"],
     "content_security_policy":"script-src 'self' https://apis.google.com; object-src 'self'"
 }

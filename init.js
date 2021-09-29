@@ -15,14 +15,29 @@ let loadScript = (url, callback) => {
     document.getElementsByTagName('head')[0].appendChild(script)
 }
 //他サーバから取り寄せたAPIとかファイルをJSに読み込ませたいときに使う
-
+let filedom, fileEnc;
 window.onload = () => {
     mcl.init(0).then(() => {
         alert("mcl読み込みOK");
     })
+    /*
+    filedom = document.getElementsByTagName('html')[0].children[1].children[0].contentWindow.document;
+    fileEnc=filedom.getElementById('multiUploadFile');
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.src = chrome.runtime.getURL('/fileget.js')
+    filedom.getElementsByTagName('head')[0].appendChild(script)
+    //(document.head[0]||document.documentElement).appendChild(script)
+    initFileEnc(fileEnc);
+    */
 }
+/*
+let initFileEnc=()=>{
+    console.log(fileEnc);
+    fileEnc.setAttribute("onchange", "setFile(this.files);");
+}
+*/
 //mclの読み込み
-
 let getJWT = () => {
     return localStorage.getItem('jwt')
 }

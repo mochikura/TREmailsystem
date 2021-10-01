@@ -81,6 +81,8 @@ let getPublicKey = async(P1) => {
         return null
     }
     
+
+
     let res = await axios.get('https://key.project15.tk/api/publickey', {
         headers: {
             'Authorization': `Bearer ${token}`,

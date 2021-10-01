@@ -1,4 +1,3 @@
-/*
 const dateshow = document.getElementById("showdate");
 const dateset = document.getElementById("date");
 dateshow.addEventListener("click", () => {
@@ -6,20 +5,25 @@ dateshow.addEventListener("click", () => {
 });
 //入力された時刻がしっかりシステム側で処理されたかを確認
 
-const fileadd = document.getElementById("encfile");
-fileadd.addEventListener("click", () => {
-    fileadd.value = "";
+const EncFileAdd = document.getElementById("encfile");
+EncFileAdd.addEventListener("click", () => {
+    EncFileAdd.value = "";
 });
-*/
+
+const DecFileAdd =document.getElementById("decfile");
+DecFileAdd.addEventListener("click", () => {
+    EDecFileAdd.value = "";
+});
+
 //リロードせずに続けてファイル選択するとおかしくなるので、ファイル選択ごとに初期化
 let filename;
 let file;
 let reader;
 let filetype;
 //他場所でも使うのでグローバルに
-/*
-fileadd.addEventListener("change", () => {
-    file = fileadd.files[0];
+
+EncFileAdd.addEventListener("change", () => {
+    file = EncFileAdd.files[0];
     //alert(file);
     reader = new FileReader();
     reader.readAsText(file);
@@ -34,12 +38,11 @@ fileadd.addEventListener("change", () => {
     };
 });
 //入力されたファイルの情報を確認できる
-*/
-/*
-const fileget = document.getElementById("encfileget");
-fileget.addEventListener("click", () => {
+
+const EncFileGet = document.getElementById("encfileget");
+EncFileGet.addEventListener("click", () => {
     //try {
-        let file = fileadd.files[0];
+        let file = EncFileAdd.files[0];
         //alert(file);
         reader = new FileReader();
         reader.readAsText(file);
@@ -60,6 +63,17 @@ fileget.addEventListener("click", () => {
 )*/
 //入力されたファイルを処理してダウンロードする。
 //検証では、テキストファイル以外は不可能だった、他だとどうやるのかは要検証
+
+const DecFileGet =document.getElementById("decfileget");
+DecFileGet.addEventListener("click", () => {
+    //try {
+        let file = fileadd.files[0];
+        //alert(file);
+        reader = new FileReader();
+        reader.readAsText(file);
+        dnc_file(datetrim(dateset.value));
+}
+)
 
 let datetrim = (date) => {
     let matchtext = /\BT\B/;

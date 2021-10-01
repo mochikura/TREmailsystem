@@ -1,4 +1,3 @@
-
 const dateshow = document.getElementById("showdate");
 const dateset = document.getElementById("date");
 dateshow.addEventListener("click", () => {
@@ -40,7 +39,6 @@ EncFileAdd.addEventListener("change", () => {
 });
 //入力されたファイルの情報を確認できる
 
-
 const EncFileGet = document.getElementById("encfileget");
 EncFileGet.addEventListener("click", () => {
     //try {
@@ -49,7 +47,7 @@ EncFileGet.addEventListener("click", () => {
         reader = new FileReader();
         reader.readAsText(file);
         enc_file(datetrim(dateset.value));
-        /*
+        
         reader.onload = ()=> {
             let blob = new Blob([reader.result], { type: file.type });
             let downlink = document.createElement('a');
@@ -57,12 +55,12 @@ EncFileGet.addEventListener("click", () => {
             downlink.download = file.name;
             downlink.click();
         }
-        */
+        
     //} catch (error) {
     //    alert("エラーが発生しました");
     //}
 }
-)
+)*/
 //入力されたファイルを処理してダウンロードする。
 //検証では、テキストファイル以外は不可能だった、他だとどうやるのかは要検証
 

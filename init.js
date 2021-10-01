@@ -20,6 +20,7 @@ window.onload = () => {
     mcl.init(0).then(() => {
         alert("mcl読み込みOK");
     })
+
     /*
     filedom = document.getElementsByTagName('html')[0].children[1].children[0].contentWindow.document;
     fileEnc=filedom.getElementById('multiUploadFile');
@@ -31,6 +32,10 @@ window.onload = () => {
     initFileEnc(fileEnc);
     */
 }
+let initFileEnc=()=>{
+    console.log(fileEnc);
+    fileEnc.setAttribute("onchange", "setFile(this.files);");
+}
 /*
 let initFileEnc=()=>{
     console.log(fileEnc);
@@ -38,6 +43,15 @@ let initFileEnc=()=>{
 }
 */
 //mclの読み込み
+/*
+window.onload=function(){
+    mcl.init(0).then(() => {
+        alert("mcl読み込みOK");
+    })
+    const fileEnc = document.getElementById('multiUploadFile');
+    fileEnc.setAttribute("onchange", "setFile(this.files)");
+}*/
+
 let getJWT = () => {
     return localStorage.getItem('jwt')
 }

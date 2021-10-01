@@ -3,13 +3,13 @@ let enc_file = (enc_time) => {
     reader.onload = async function (fdata) {
         let P1 = getParam1()
         //P1パラメータis何？
-        let P2 = getParam2()
+        //let P2 = getParam2()
         //P2パラメータis何？
-        let k = new mcl.Fr()
+        //let k = new mcl.Fr()
         //Frってなんか乱数を入れるっぽい
-        k.setByCSPRNG()
+        //k.setByCSPRNG()
         //setByCSRPNGは乱数を生成するらしい
-        k.deserialize(k.serialize())
+        //k.deserialize(k.serialize())
         //なんでシリアライズしたあとにデシリアライズしてるの？もとに戻るだけでは？
         /*
         let P_KEY = enc_time//公開鍵
@@ -33,7 +33,7 @@ let enc_file = (enc_time) => {
         const encMsg = CryptoJS.AES.encrypt(fdata.target.result, key.getStr())
         //ここで中身の暗号化？
         var contents = encMsg + ',' + encKey
-            + '__' + P1.getStr() //+ '__' + P2.getStr() + '__' + S.getStr() + '__' + R.getStr()
+            + '__' + P1.getStr() + '__' + enc_time//+ '__' + P2.getStr() + '__' + S.getStr() + '__' + R.getStr()
         //暗号化されたデータとパスワードを結合
         //↑パスワードだけじゃなくてパラメータも暗号化してね？
         var blob_content = new Blob([contents]) //文字列で扱えるように変換
@@ -62,7 +62,6 @@ let encKeyByTRE = async (enc_time, P1, AESkey) => {
 
     return TIMEenc(enc_time, P1, mpk, AESkey)
 }
-//時間、公開パラメータ、謎？？？、AES鍵
 //MPKとは？？、予想：MasterPublicKey
 
 //Enc(m)=[xP, m*H(e(Pt,xKt))]=(C1,C2)

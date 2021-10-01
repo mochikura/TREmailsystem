@@ -24,7 +24,7 @@ let filetype;
 //他場所でも使うのでグローバルに
 
 EncFileAdd.addEventListener("change", () => {
-    file = fileadd.files[0];
+    file = EncFileAdd.files[0];
     //alert(file);
     reader = new FileReader();
     reader.readAsText(file);
@@ -44,7 +44,7 @@ EncFileAdd.addEventListener("change", () => {
 const EncFileGet = document.getElementById("encfileget");
 EncFileGet.addEventListener("click", () => {
     //try {
-        let file = fileadd.files[0];
+        let file = EncFileAdd.files[0];
         //alert(file);
         reader = new FileReader();
         reader.readAsText(file);

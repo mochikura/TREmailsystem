@@ -81,7 +81,7 @@ let getPublicKey = async(P1) => {
         return null
     }
     
-    let res = await axios.get('https://key.project15.tk/api/publickey', {
+    let res = await axios.get('https://key.project15.tk/api/', {
         headers: {
             'Authorization': `Bearer ${token}`,
             'P1': JSON.stringify(P1.serialize())//P1のパラメータを取得している、通信にどうやらJSONを使ってる模様

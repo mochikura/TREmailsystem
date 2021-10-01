@@ -3,18 +3,22 @@
 //myIDとscrIDの宣言あり
 let dec_file = async () => {
     reader.onload = async function (fdata) {
+        //var contents = encMsg + ',' + encKey + '__' + P1.getStr() + '__' + enc_time
         let cut_str = ","     //区切るやつを定義しておく。
         let cut_str2 = "__"
 
         //Cstrに暗号化されたファイルを格納、getC関数で暗号化されたパスワードを格納。
         var Cstr2 = fdata.target.result.split(cut_str2);
         let P1 = new mcl.G1()
-        //let P2 = new mcl.G2()
+        let dec_time
         //let S = new mcl.G1()
         //let R = new mcl.G2()
 
         P1.setStr(Cstr2[1])
-        //P2.setStr(Cstr2[2])
+        dec_time=Cstr2[2]
+        if(dateget>=dectime){
+            return;
+        }
         //S.setStr(Cstr2[3])
         //R.setStr(Cstr2[4])
 

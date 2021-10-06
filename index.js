@@ -1,3 +1,4 @@
+/*
 const dateshow = document.getElementById("showdate");
 const dateset = document.getElementById("date");
 dateshow.addEventListener("click", () => {
@@ -14,14 +15,14 @@ const DecFileAdd =document.getElementById("decfile");
 DecFileAdd.addEventListener("click", () => {
     EDecFileAdd.value = "";
 });
-
+*/
 //リロードせずに続けてファイル選択するとおかしくなるので、ファイル選択ごとに初期化
 let filename;
 let file;
 let reader;
 let filetype;
 //他場所でも使うのでグローバルに
-
+/*
 EncFileAdd.addEventListener("change", () => {
     file = EncFileAdd.files[0];
     //alert(file);
@@ -38,7 +39,8 @@ EncFileAdd.addEventListener("change", () => {
     };
 });
 //入力されたファイルの情報を確認できる
-
+*/
+/*
 const EncFileGet = document.getElementById("encfileget");
 EncFileGet.addEventListener("click", () => {
     //try {
@@ -55,15 +57,15 @@ EncFileGet.addEventListener("click", () => {
             downlink.download = file.name;
             downlink.click();
         }
-        
     //} catch (error) {
     //    alert("エラーが発生しました");
     //}
 }
-)*/
+)
+*/
 //入力されたファイルを処理してダウンロードする。
 //検証では、テキストファイル以外は不可能だった、他だとどうやるのかは要検証
-
+/*
 const DecFileGet =document.getElementById("decfileget");
 DecFileGet.addEventListener("click", () => {
     //try {
@@ -74,7 +76,7 @@ DecFileGet.addEventListener("click", () => {
         dnc_file(datetrim(dateset.value));
 }
 )
-
+*/
 let datetrim = (date) => {
     let matchtext = /\BT\B/;
     //YYYY-MM-DDThh:mm

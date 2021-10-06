@@ -21,39 +21,59 @@ window.onload = () => {
         alert("mcl読み込みOK");
     })
 
-    /*
-    filedom = document.getElementsByTagName('html')[0].children[1].children[0].contentWindow.document;
-    fileEnc=filedom.getElementById('multiUploadFile');
-    const script = document.createElement('script')
-    script.type = 'text/javascript'
-    script.src = chrome.runtime.getURL('/fileget.js')
-    filedom.getElementsByTagName('head')[0].appendChild(script)
-    //(document.head[0]||document.documentElement).appendChild(script)
-    initFileEnc(fileEnc);
-    */
-}
-let initFileEnc=()=>{
-    console.log(fileEnc);
-    fileEnc.setAttribute("onchange", "setFile(this.files);");
-}
-/*
-let initFileEnc=()=>{
-    console.log(fileEnc);
-    fileEnc.setAttribute("onchange", "setFile(this.files);");
-}
-*/
-//mclの読み込み
-/*
-window.onload=function(){
-    mcl.init(0).then(() => {
-        alert("mcl読み込みOK");
-    })
-    const fileEnc = document.getElementById('multiUploadFile');
-    fileEnc.setAttribute("onchange", "setFile(this.files)");
-}*/
 
-let getJWT = () => {
-    return localStorage.getItem('jwt')
+    filedom = document.getElementsByTagName('html')[0].children[1].children[0].contentWindow.document;
+    initUI();
+    initFileEnc(fileEnc);
+
+}
+
+let initUI = () => {
+    let menu = filedom.getElementById('topMenu')
+    let encdiv = filedom.createElement('div')
+    encdiv.innerHTML = `
+    <div style="margin: 10px 20px 10px;">
+    <select id="selectEnc">
+    <option value="select">選択してください</option>
+    <option value="tre">タイムリリース暗号</option>
+    <option value="ibe">IDベース暗号</option>
+    </select>
+    <section id="tre" style="display: none;">
+    <span style="font-size : 10pt">復号時刻</span>
+    <input type="datetime-local" id="date" min="2020-01-01T00:00" step="1800">
+    <input type="file" id="encfile">
+    <button type="button" id="encfileget">暗号化</button><br>
+    </section>
+    <section id="ibe" style="display: none;">未実装</section>
+    </div>`
+    menu.before(encdiv)
+
+    filedom.getElementById("selectEnc").onchange = function () {
+        let encValue = filedom.getElementById("selectEnc").value
+        if(encValue=="tre"){
+            filedom.getElementById("tre").style.display="";
+            filedom.getElementById("ibe").style.display="none";
+        }else if(encValue=="ibe"){
+            filedom.getElementById("tre").style.display="none";
+            filedom.getElementById("ibe").style.display="";
+        }
+    }
+
+    filedom.getElementById("encfile").onclick = () => {
+        filedom.getElementById("encfile").value = "";
+    }
+    let dateset=filedom.getElementById("date");
+    filedom.getElementById("encfileget").onclick = () =>{
+        let file = filedom.getElementById("encfile").files[0];
+        reader = new FileReader();
+        reader.readAsText(file);
+        enc_file(datetrim(dateset.value));
+    }
+}
+
+let initFileEnc = () => {
+    console.log(fileEnc);
+    //fileEnc.setAttribute("onchange", "setFile(this.files);");
 }
 
 /*

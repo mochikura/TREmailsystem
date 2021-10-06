@@ -16,7 +16,8 @@ let dec_file = async () => {
 
         P1.setStr(Cstr2[1])
         dec_time=Cstr2[2]
-        if(dateget>=dectime){
+        if(dateget<dectime){
+            alert("まだ復号できない時刻です");
             return;
         }
         //S.setStr(Cstr2[3])
@@ -130,6 +131,7 @@ let verifySign = async (msg, P1, P2, S, R, P_KEY, time) => {
     }
 }
 */
+//e(S,R)=(e(P1,P2)^H(msg))*e((H1(P_KEY),Ppub)^R)
 //署名検証かな？？
 //多分今回の場合いらない
 

@@ -10,11 +10,10 @@
             ],
             "js":[
                 "fileget.js",
-                "init.js",
+                "initenc.js",
                 "mcl.js",
                 "index.js",
                 "enc.js",
-                "dec.js",
                 "getkey.js",
                 "axios.js",
                 "js/crypto-js.js",
@@ -23,7 +22,24 @@
             ],
             "run_at": "document_end",
             "all_frames": true
-        }
+        },{
+            "matches":[
+            "https://webmail.fun.ac.jp/cgi-bin/htmlparse.cgi?html=frame.html"
+        ],
+        "js":[
+            "index.js",
+            "axios.js",
+            "mcl.js",
+            "getkey.js",
+            "dec.js",
+            "js/aes.js",
+            "js/crypto-js.js",
+            "fileget.js",
+            "initdec.js"
+        ],
+        "run_at":"document_end",
+        "all_frmes":true
+    }
     ],
     "browser_action":{
         "default_popup":"popup.html"

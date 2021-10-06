@@ -15,20 +15,17 @@ let loadScript = (url, callback) => {
     document.getElementsByTagName('head')[0].appendChild(script)
 }
 //他サーバから取り寄せたAPIとかファイルをJSに読み込ませたいときに使う
-let filedom, fileEnc;
+let filedom/*, fileEnc*/;
 window.onload = () => {
     mcl.init(0).then(() => {
-        alert("mcl読み込みOK");
     })
-
-
     filedom = document.getElementsByTagName('html')[0].children[1].children[0].contentWindow.document;
-    initUI();
-    initFileEnc(fileEnc);
+    initEncUI();
+    initFileEnc();
 
 }
 
-let initUI = () => {
+let initEncUI = () => {
     let menu = filedom.getElementById('topMenu')
     let encdiv = filedom.createElement('div')
     encdiv.innerHTML = `
@@ -72,7 +69,7 @@ let initUI = () => {
 }
 
 let initFileEnc = () => {
-    console.log(fileEnc);
+    //console.log(fileEnc);
     //fileEnc.setAttribute("onchange", "setFile(this.files);");
 }
 

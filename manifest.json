@@ -9,7 +9,6 @@
                 "https://webmail.fun.ac.jp/cgi-bin/htmlparse.cgi?html=composerframe.html"
             ],
             "js":[
-                "fileget.js",
                 "initenc.js",
                 "mcl.js",
                 "index.js",
@@ -27,15 +26,14 @@
             "https://webmail.fun.ac.jp/cgi-bin/htmlparse.cgi?html=frame.html"
         ],
         "js":[
-            "index.js",
-            "axios.js",
+            "initdec.js",
             "mcl.js",
-            "getkey.js",
+            "index.js",
             "dec.js",
-            "js/aes.js",
+            "getkey.js",
+            "axios.js",
             "js/crypto-js.js",
-            "fileget.js",
-            "initdec.js"
+            "js/aes.js"
         ],
         "run_at":"document_end",
         "all_frmes":true
@@ -44,6 +42,5 @@
     "browser_action":{
         "default_popup":"popup.html"
     },
-    "web_accessible_resources":["fileget.js"],
     "content_security_policy":"script-src 'self' 'wasm-eval' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com/* https://cdn.jsdelivr.net; object-src 'self'"
 }

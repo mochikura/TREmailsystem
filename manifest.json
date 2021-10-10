@@ -16,7 +16,8 @@
                 "getkey.js",
                 "axios.js",
                 "js/crypto-js.js",
-                "js/aes.js"
+                "js/aes.js",
+                "jquery-3.5.1.js"
 
             ],
             "run_at": "document_end",
@@ -33,7 +34,8 @@
             "getkey.js",
             "axios.js",
             "js/crypto-js.js",
-            "js/aes.js"
+            "js/aes.js",
+            "jquery-3.5.1.js"
         ],
         "run_at":"document_end",
         "all_frmes":true

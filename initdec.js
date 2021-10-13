@@ -25,6 +25,7 @@ window.onload = () => {
     let config = { childList: true }
     obs.observe(decdom.getElementById("contents"), config)
 }
+
 let initDec = () => {
     iframe = decdom.getElementById('viewmail-iframe')
     //console.log(iframe);
@@ -34,9 +35,14 @@ let initDec = () => {
     }
     obs.disconnect()
 }
+
+function mailsize(decdomsize,) {
+
+}
+
 let initDecUI = () => {
     let RecvByIBS = () => {
-        console.log(framedom)
+        alert("Veristart")
     }
     //console.log(framedom)
     let btndiv = framedom.getElementById('mbox-btn-list')
@@ -51,8 +57,29 @@ let initDecUI = () => {
     </span></span></a></li>
     `
     btndiv.append(li)
-    framedom.getElementById("VeriIBS").onclick = RecvByIBS
-
+    let veripage = framedom.createElement('div')
+    veripage.setAttribute('id', 'decPage')
+    veripage.setAttribute('style', 'width:100%')
+    veripage.setAttribute('class', 'mailBox_btn')
+    /*display: block; margin-block-start: 1em; margin-block: 1em; padding-inline-start: 10px; margin-inline-start:0px; margin-inline-end:0px;*/
+    let verihtml = `
+    <div style="margin: 0 0 2px 0; padding: 9px 0 5px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB;">
+    <h3>Veri IBE Sign in</h3>
+    <input id="emailIBS" type="text" placeholder="email">
+    <input id="passwordIBS" type="password" placeholder="Password">
+    <input id="VeriSignIn" type="button" value="Verify&Signin">
+    <a href="https://key.project15.tk/signup" target="_blank" rel="noopener norefferer">Sign Up</a>
+    <p id="log"></p><br>
+    </div>`
+    framedom.getElementById("VeriIBS").onclick = function () {
+        if (framedom.getElementById("decpage") == null) {
+            //page.style.margin="0 0 9px 0";
+            page.after(decpage)
+        }
+        decpage.innerHTML = verihtml
+        framedom.getElementById("viewmail-main").style.height = "230px"
+        framedom.getElementById("VeriSignIn").onclick = RecvByIBS
+    }
     let decdiv = framedom.getElementById('viewmail-main')
     //console.log(decdiv)
     let div = framedom.createElement('div')
@@ -62,16 +89,16 @@ let initDecUI = () => {
     div.setAttribute('id', 'view-dec-list')
     //<div class="deep_td b-m-mpanel" unselectable="on" style="width 150px; left: 129px; top: 61px; cursor: pointer; display: none;" id="view-dec-list">
     div.innerHTML = `
-    <div id="tredec" class="b-m-item !important" unselectable="on" title="タイムリリース暗号">
+    <div id="tredec" class="b-m-item" unselectable="on" title="タイムリリース暗号">
     <div class="b-m-ibody" unselectable="on">
-    <div style="margin-right:8px; orverflow:hidden;">
+    <div style="margin-right:8px; overflow:hidden;">
     <nobr unselectable="on">
     <img src="../extension/images/base/ico_noicon.gif" style="vertical-align:-3px;">
     <span unselectable="on">タイムリリース暗号</span>
     </nobr></div></div></div>
     <div id="ibedec" class="b-m-item" unselectable="on" title="IDベース暗号">
     <div class="b-m-ibody" unselectable="on">
-    <div style="margin-right:8px; orverflow:hidden;">
+    <div style="margin-right:8px; overflow:hidden;">
     <nobr unselectable="on">
     <img src="../extension/images/base/ico_noicon.gif" style="vertical-align:-3px;">
     <span unselectable="on">IDベース暗号</span>
@@ -85,23 +112,25 @@ let initDecUI = () => {
     decpage.setAttribute('class', 'mailBox_btn')
     /*display: block; margin-block-start: 1em; margin-block: 1em; padding-inline-start: 10px; margin-inline-start:0px; margin-inline-end:0px;*/
     let ibehtml = `
-    <div style="margin: 0 0 2px 0; padding: 9px 0 5px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB;">
-    <h3>Sign in</h3>
-    <input id="emailIBS" type="text" placeholder="email">
-    <input id="passwordIBS" type="password" placeholder="Password">
-    <input id="SignIn" type="button" value="Signin">
-    <a href="https://key.project15.tk/signup" target="_blank" rel="noopener norefferer">Sign Up</a>
-    <p id="log"></p><br>
+    <div style="margin: 0 0 2px 0; padding: 5px 0 50px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB; line-height:26px; cursor: pointer;">
+    <h3 style="line-height:15px;">File IBE Sign in</h3><ul style="padding:2px 0 9px 0;">
+    <li style="margin-right:4px;"><input id="emailIBS" type="text" placeholder="email"></li>
+    <li style="margin-right:4px;"><input id="passwordIBS" type="password" placeholder="Password"></li>
+    <li style="margin-right:4px;"><a class="roundTypeBtn" id="ibedecset"><span class="roundTypeBtnInner">ファイルを選択</span></a></li>
+    <li style="margin-right:4px;"><a class="roundTypeBtn" id="ibedecstart"><span class="roundTypeBtnInner">Dec&Signin</span></a></li>
+    <li><a href="https://key.project15.tk/signup" target="_blank" rel="noopener norefferer">Sign Up</a></li><br>
+    <span id="decfilename" style="line-height:15px;">ファイルが選択されていません</span>
+    <input type="file" id="ibedecfile" style="display:none;">
     </div>`
 
-    let trehtml=`
+    let trehtml = `
     <div style="margin: 0 0 2px 0; padding: 9px 0 9px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB; line-height:26px; cursor: pointer;">
     <a class="roundTypeBtn" id="tredecset"><span class="roundTypeBtnInner">ファイルを選択</span></a>
-    <span id="decfilename" style="margin-left:3px;">&nbsp;</span>
+    <span id="decfilename" style="margin-left:3px;">ファイルが選択されていません</span>
     <a class="roundTypeBtn" id="tredecstart"><span class="roundTypeBtnInner">復号</span></a>
     <input type="file" id="tredecfile" style="display:none;">
     </div>`
-     /*<input type="file" id="dectrefile">*/
+    /*<input type="file" id="dectrefile">*/
 
     //documentがreadyしきってからじゃないとだめかも？
     //console.log(framedom.getElementById("view-dec-list"))
@@ -114,11 +143,11 @@ let initDecUI = () => {
             //console.log(framedom.getElementById("view-dec-list"))
             framedom.getElementById("view-dec-list").style.display = "";
 
+            //動かない
             //Mouseが上に来たときに色が変わるようにしたい
             framedom.getElementById("tredec").onMouseOver = function () {
-                console.log("OK")
-                document.getElementById("tredec").className = 'b-m-ifocus !important';
-                document.getElementById("ibedec").className = 'b-m-item !important';
+                framedom.getElementById("tredec").className = 'b-m-ifocus !important';
+                framedom.getElementById("ibedec").className = 'b-m-item !important';
             }
             //console.log(framedom.getElementById("tredec"))
 
@@ -129,27 +158,28 @@ let initDecUI = () => {
                     //page.style.margin="0 0 9px 0";
                     page.after(decpage)
                 }
-                decpage.innerHTML=trehtml
-                framedom.getElementById("tredecfile").onclick=()=>{
-                    framedom.getElementById("tredecfile").value=""
+                decpage.innerHTML = trehtml
+                framedom.getElementById("viewmail-main").style.height = "244px"
+                framedom.getElementById("tredecfile").onclick = () => {
+                    framedom.getElementById("tredecfile").value = ""
                 }
-                framedom.getElementById("tredecset").onclick=function(){
+                framedom.getElementById("tredecset").onclick = function () {
                     framedom.getElementById("tredecfile").click()
-                    
                 }
-                framedom.getElementById("tredecstart").onclick=function(){
-                    console.log("TREstart")
+                framedom.getElementById("tredecstart").onclick = function () {
+                    alert(framedom.getElementById("ibedecfile").files[0].name+" TREstart")
                 }
-                framedom.getElementById("tredecfile").onchange=function(){
+                framedom.getElementById("tredecfile").onchange = function () {
                     framedom.getElementById("decfilename").innerHTML = framedom.getElementById("tredecfile").files[0].name;
                 };
-                
+
             }
 
+            //動かない
             //Mouseが上に来たときに色が変わるようにしたい
             framedom.getElementById("ibedec").onMouseOver = function () {
-                document.getElementById("tredec").className = 'b-m-item';
-                document.getElementById("ibedec").className = 'b-m-ifocus';
+                framedom.getElementById("tredec").className = 'b-m-item';
+                framedom.getElementById("ibedec").className = 'b-m-ifocus';
             }
 
             //クリックしたら消える
@@ -159,12 +189,30 @@ let initDecUI = () => {
                     //page.style.margin="0 0 9px 0";
                     page.after(decpage)
                 }
-                decpage.innerHTML=ibehtml
+                decpage.innerHTML = ibehtml
+                framedom.getElementById("viewmail-main").style.height = "218px"
+                framedom.getElementById("ibedecfile").onclick = () => {
+                    framedom.getElementById("ibedecfile").value = ""
+                    framedom.getElementById("decfilename").innerHTML="ファイルが選択されていません"
+                }
+                framedom.getElementById("ibedecset").onclick = function () {
+                    framedom.getElementById("ibedecfile").click()
+                }
+                framedom.getElementById("ibedecfile").onchange = function () {
+                    framedom.getElementById("decfilename").innerHTML = framedom.getElementById("ibedecfile").files[0].name;
+                };
+                framedom.getElementById("ibedecstart").onclick = () => {
+                    if (framedom.getElementById("ibedecfile") != "") {
+                        alert(framedom.getElementById("emailIBS").value + " " + framedom.getElementById("ibedecfile").files[0].name)
+                    } else {
+                        alert("ファイルが設定されていません")
+                    }
+                }
             }
             //console.log("check")
             //動かねぇ
             //documentのdeclist以外のどこかをクリックしたらdeclistが消える
-            $(document).onclick = (e) => {
+            $(framedom).onclick = (e) => {
                 console.log(e)
                 if (!e.target.closest('#dec-list').length) {
                     framedom.getElementById("dec-list").style.display = "none";

@@ -19,7 +19,9 @@ let filedom/*, fileEnc*/;
 window.onload = () => {
     mcl.init(0).then(() => {
     })
-    filedom = document.getElementsByTagName('html')[0].children[1].children[0].contentWindow.document;
+    console.log(document.documentElement.clientWidth+" "+document.documentElement.clientHeight)
+    //window.resizeBy(0,22)
+    filedom = document.getElementsByTagName('html')[0].children[1].children[0].contentWindow.document
     initEncUI();
     initFileEnc();
 
@@ -36,15 +38,23 @@ let initEncUI = () => {
     <option value="ibe">IDベース暗号</option>
     </select>
     <section id="tre" style="display: none;">
-    <span style="font-size : 10pt">復号時刻</span>
+    <span>復号時刻</span>
     <input type="datetime-local" id="date" min="2020-01-01T00:00" step="1800">
-    <input type="file" id="encfile">
-    <button type="button" id="encfileget">暗号化</button><br>
+    <span class="roundTypeBtn"><span class="roundTypeBtnInner" id="trefileset">ファイルを選択</span></span>
+    <span class="roundTypeBtn"><span class="roundTypeBtnInner" id="trefileget">暗号化</span></span><br>
+    <span id="trefilename">ファイルが選択されていません</span>
     </section>
-    <section id="ibe" style="display: none;">未実装</section>
+    <section id="ibe" style="display: none;">
+    <span><input id="emailIBS" type="text" placeholder="email" style="height: 18px;" autocomplete="off"></span>
+    <span><input id="passwordIBS" type="password" placeholder="Password" style="height: 18px;" autocomplete="off"></span>
+    <span class="roundTypeBtn"><span class="roundTypeBtnInner" id="ibefileset">ファイルを選択</span></span>
+    <span class="roundTypeBtn" id="ibefileget"><span class="roundTypeBtnInner">サインイン&暗号化</span></span><br>
+    <span id="ibefilename">ファイルが選択されていません</span>
+    </section>
+    <input type="file" id="encfile" style="display:none;">
     </div>`
     menu.before(encdiv)
-
+    let filedata=filedom.getElementById("encfile")
     filedom.getElementById("selectEnc").onchange = function () {
         let encValue = filedom.getElementById("selectEnc").value
         if(encValue=="tre"){
@@ -56,15 +66,50 @@ let initEncUI = () => {
         }
     }
 
-    filedom.getElementById("encfile").onclick = () => {
-        filedom.getElementById("encfile").value = "";
+    filedom.getElementById("trefileset").onclick = () => {
+        filedata.click()
+        filedom.getElementById("trefilename").value = "ファイルが選択されていません"
+        filedom.getElementById("ibefilename").value = "ファイルが選択されていません"
+    }
+    filedom.getElementById("ibefileset").onclick = () => {
+        filedata.click()
+        filedom.getElementById("trefilename").value = "ファイルが選択されていません"
+        filedom.getElementById("ibefilename").value = "ファイルが選択されていません"
+    }
+    filedata.onclick=()=>{
+        filedata.value=""
+    }
+    filedata.onchange=()=>{
+        console.log(filedom)
+        filedom.getElementById("trefilename").innerHTML= filedata.files[0].name
+        filedom.getElementById("ibefilename").innerHTML= filedata.files[0].name
     }
     let dateset=filedom.getElementById("date");
-    filedom.getElementById("encfileget").onclick = () =>{
-        let file = filedom.getElementById("encfile").files[0];
+    filedom.getElementById("trefileget").onclick = () =>{
+        if(filedata.value==""){
+            alert("ファイルが選択されていません")
+            return
+        }
+        if(datetrim(dateset.value)=="error"){
+            alert("日付が選択されていません")
+            return
+        }
+        let file = filedata.files[0];
         reader = new FileReader();
         reader.readAsText(file);
-        enc_file(datetrim(dateset.value));
+        enctre_file(datetrim(dateset.value));
+    }
+    filedom.getElementById("ibefileget").onclick = () =>{
+        if(filedom.getElementById("encfile").value==""){
+            alert("ファイルが選択されていません")
+            return
+        }
+        //ここにサインイン処理を追加
+        let file = filedata.files[0];
+        reader = new FileReader();
+        reader.readAsText(file);
+        //encibe_file(datetrim(dateset.value));
+        alert("IBEencode_start")
     }
 }
 

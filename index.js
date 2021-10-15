@@ -86,7 +86,7 @@ let datetrim = (date) => {
         let splittime = splitT[1].split(':');
         return splitdate[0] + splitdate[1] + splitdate[2] + splittime[0] + splittime[1];
     } else {
-        return "日付を入力してください";
+        return "error";
     }
 }
 //JSで用意された日付入力機能は、YYYY-MM-DDThh:mmの形で出てくるので、処理に適する形であるYYYYMMDDhhmmに変換する
@@ -98,3 +98,7 @@ let dateget = () => {
     return ans;
 }
 //現在の日付を上と同じ形で取得する。
+
+let getJWT = () => {
+    return localStorage.getItem('jwt')
+}

@@ -36,7 +36,7 @@ let initDec = () => {
     obs.disconnect()
 }
 
-function mailsize(decdomsize,) {
+function mailsize(decdomsize) {
 
 }
 
@@ -44,7 +44,7 @@ let initDecUI = () => {
     let RecvByIBS = () => {
         alert("Veristart")
     }
-    //console.log(framedom)
+    console.log(framedom)
     let btndiv = framedom.getElementById('mbox-btn-list')
     //console.log(div)
     let li = framedom.createElement('li')
@@ -63,13 +63,13 @@ let initDecUI = () => {
     veripage.setAttribute('class', 'mailBox_btn')
     /*display: block; margin-block-start: 1em; margin-block: 1em; padding-inline-start: 10px; margin-inline-start:0px; margin-inline-end:0px;*/
     let verihtml = `
-    <div style="margin: 0 0 2px 0; padding: 9px 0 5px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB;">
-    <h3>Veri IBE Sign in</h3>
-    <input id="emailIBS" type="text" placeholder="email">
-    <input id="passwordIBS" type="password" placeholder="Password">
-    <input id="VeriSignIn" type="button" value="Verify&Signin">
-    <a href="https://key.project15.tk/signup" target="_blank" rel="noopener norefferer">Sign Up</a>
-    <p id="log"></p><br>
+    <div style="margin: 0 0 2px 0; padding: 5px 0 5px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB;">
+    <h3 style="line-height:15px;">Veri IBE Sign in</h3><ul style="padding:2px 0 2px 0;">
+    <li style="margin-right:4px;"><input id="emailIBS" type="text" placeholder="email" style="height: 18px;" autocomplete="off"></li>
+    <li style="margin-right:4px;"><input id="passwordIBS" type="password" placeholder="Password" style="height: 18px;" autocomplete="off"></li>
+    <li style="margin-right:4px;"><a class="roundTypeBtn" id="VeriSignIn"><span class="roundTypeBtnInner">署名検証&サインイン</span></a></li>
+    <li><a href="https://key.project15.tk/signup" target="_blank" rel="noopener norefferer">Sign Up</a></li></ul><br><br>
+    <p id="log" style="margin-top:6px;">情報を入力してサインインしてください</p>
     </div>`
     framedom.getElementById("VeriIBS").onclick = function () {
         if (framedom.getElementById("decpage") == null) {
@@ -112,12 +112,12 @@ let initDecUI = () => {
     decpage.setAttribute('class', 'mailBox_btn')
     /*display: block; margin-block-start: 1em; margin-block: 1em; padding-inline-start: 10px; margin-inline-start:0px; margin-inline-end:0px;*/
     let ibehtml = `
-    <div style="margin: 0 0 2px 0; padding: 5px 0 50px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB; line-height:26px; cursor: pointer;">
+    <div style="margin: 0 0 2px 0; padding: 5px 0 46px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB; line-height:26px; cursor: pointer;">
     <h3 style="line-height:15px;">File IBE Sign in</h3><ul style="padding:2px 0 9px 0;">
-    <li style="margin-right:4px;"><input id="emailIBS" type="text" placeholder="email"></li>
-    <li style="margin-right:4px;"><input id="passwordIBS" type="password" placeholder="Password"></li>
+    <li style="margin-right:4px;"><input id="emailIBS" type="text" placeholder="email" style="height: 18px;"></li>
+    <li style="margin-right:4px;"><input id="passwordIBS" type="password" placeholder="Password" style="height: 18px;"></li>
     <li style="margin-right:4px;"><a class="roundTypeBtn" id="ibedecset"><span class="roundTypeBtnInner">ファイルを選択</span></a></li>
-    <li style="margin-right:4px;"><a class="roundTypeBtn" id="ibedecstart"><span class="roundTypeBtnInner">Dec&Signin</span></a></li>
+    <li style="margin-right:4px;"><a class="roundTypeBtn" id="ibedecstart"><span class="roundTypeBtnInner">サインイン&復号</span></a></li>
     <li><a href="https://key.project15.tk/signup" target="_blank" rel="noopener norefferer">Sign Up</a></li><br>
     <span id="decfilename" style="line-height:15px;">ファイルが選択されていません</span>
     <input type="file" id="ibedecfile" style="display:none;">
@@ -165,9 +165,14 @@ let initDecUI = () => {
                 }
                 framedom.getElementById("tredecset").onclick = function () {
                     framedom.getElementById("tredecfile").click()
+                    framedom.getElementById("decfilename").innerHTML = "ファイルが選択されていません"
                 }
                 framedom.getElementById("tredecstart").onclick = function () {
-                    alert(framedom.getElementById("ibedecfile").files[0].name+" TREstart")
+                    alert(framedom.getElementById("tredecfile").files[0].name + " TREstart")
+                    let file = filedom.getElementById("tredecfile").files[0];
+                    reader = new FileReader();
+                    reader.readAsText(file);
+                    dectre_file()
                 }
                 framedom.getElementById("tredecfile").onchange = function () {
                     framedom.getElementById("decfilename").innerHTML = framedom.getElementById("tredecfile").files[0].name;
@@ -193,7 +198,7 @@ let initDecUI = () => {
                 framedom.getElementById("viewmail-main").style.height = "218px"
                 framedom.getElementById("ibedecfile").onclick = () => {
                     framedom.getElementById("ibedecfile").value = ""
-                    framedom.getElementById("decfilename").innerHTML="ファイルが選択されていません"
+                    framedom.getElementById("decfilename").innerHTML = "ファイルが選択されていません"
                 }
                 framedom.getElementById("ibedecset").onclick = function () {
                     framedom.getElementById("ibedecfile").click()

@@ -1,7 +1,7 @@
 //予想ではあるが、encodeの時点で、encfile自体に署名を設けることで、そのファイル自体が本当に自分宛てのものであるのかそうでないかを判別する。
 //今回のタイムリリースの場合相手ではなく時間で暗号を設けるので、今回はその部分を除く必要がありそう。
 //myIDとscrIDの宣言あり
-let dec_file = async () => {
+let dectre_file = async () => {
     reader.onload = async function (fdata) {
         //var contents = encMsg + ',' + encKey + '__' + P1.getStr() + '__' + enc_time
         let cut_str = ","     //区切るやつを定義しておく。

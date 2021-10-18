@@ -37,14 +37,14 @@ let initEncUI = () => {
     <option value="tre">タイムリリース暗号</option>
     <option value="ibe">IDベース暗号</option>
     </select>
-    <section id="tre" style="display: none;">
+    <section id="tre" style="display: none; font-size:12px;">
     <span>復号時刻</span>
     <input type="datetime-local" id="date" min="2020-01-01T00:00" step="1800">
     <span class="roundTypeBtn"><span class="roundTypeBtnInner" id="trefileset">ファイルを選択</span></span>
     <span class="roundTypeBtn"><span class="roundTypeBtnInner" id="trefileget">暗号化</span></span><br>
     <span id="trefilename">ファイルが選択されていません</span>
     </section>
-    <section id="ibe" style="display: none;">
+    <section id="ibe" style="display: none; font-size:12px;">
     <span><input id="emailIBS" type="text" placeholder="email" style="height: 18px;" autocomplete="off"></span>
     <span><input id="passwordIBS" type="password" placeholder="Password" style="height: 18px;" autocomplete="off"></span>
     <span class="roundTypeBtn"><span class="roundTypeBtnInner" id="ibefileset">ファイルを選択</span></span>
@@ -68,13 +68,13 @@ let initEncUI = () => {
 
     filedom.getElementById("trefileset").onclick = () => {
         filedata.click()
-        filedom.getElementById("trefilename").value = "ファイルが選択されていません"
-        filedom.getElementById("ibefilename").value = "ファイルが選択されていません"
+        filedom.getElementById("trefilename").innerHTML = "ファイルが選択されていません"
+        filedom.getElementById("ibefilename").innerHTML = "ファイルが選択されていません"
     }
     filedom.getElementById("ibefileset").onclick = () => {
         filedata.click()
-        filedom.getElementById("trefilename").value = "ファイルが選択されていません"
-        filedom.getElementById("ibefilename").value = "ファイルが選択されていません"
+        filedom.getElementById("trefilename").innerHTML = "ファイルが選択されていません"
+        filedom.getElementById("ibefilename").innerHTML = "ファイルが選択されていません"
     }
     filedata.onclick=()=>{
         filedata.value=""

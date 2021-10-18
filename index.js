@@ -1,45 +1,9 @@
-/*
-const dateshow = document.getElementById("showdate");
-const dateset = document.getElementById("date");
-dateshow.addEventListener("click", () => {
-    alert(datetrim(dateset.value));
-});
-//入力された時刻がしっかりシステム側で処理されたかを確認
-
-const EncFileAdd = document.getElementById("encfile");
-EncFileAdd.addEventListener("click", () => {
-    EncFileAdd.value = "";
-});
-
-const DecFileAdd =document.getElementById("decfile");
-DecFileAdd.addEventListener("click", () => {
-    EDecFileAdd.value = "";
-});
-*/
-//リロードせずに続けてファイル選択するとおかしくなるので、ファイル選択ごとに初期化
 let filename;
 let file;
 let reader;
 let filetype;
 //他場所でも使うのでグローバルに
-/*
-EncFileAdd.addEventListener("change", () => {
-    file = EncFileAdd.files[0];
-    //alert(file);
-    reader = new FileReader();
-    reader.readAsText(file);
-    filename = file.name;
-    filetype = file.type;
-    let filesize = file.size;
-    reader.onload = () => {
-        //document.getElementById("filebi").innerHTML = reader.result;
-        document.getElementById("filename").innerHTML = "ファイル名：" + filename;
-        document.getElementById("filetype").innerHTML = "ファイル形式：" + filetype;
-        document.getElementById("filesize").innerHTML = "ファイルサイズ：" + filesize;
-    };
-});
-//入力されたファイルの情報を確認できる
-*/
+
 /*
 const EncFileGet = document.getElementById("encfileget");
 EncFileGet.addEventListener("click", () => {

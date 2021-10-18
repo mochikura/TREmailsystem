@@ -36,6 +36,7 @@ let initDec = () => {
     obs.disconnect()
 }
 
+//レイアウト調整用
 function mailsize(decdomsize) {
 
 }
@@ -44,7 +45,7 @@ let initDecUI = () => {
     let RecvByIBS = () => {
         alert("Veristart")
     }
-    console.log(framedom)
+    //console.log(framedom)
     let btndiv = framedom.getElementById('mbox-btn-list')
     //console.log(div)
     let li = framedom.createElement('li')
@@ -139,9 +140,22 @@ let initDecUI = () => {
             if (framedom.getElementById("view-dec-list") == null) {
                 decdiv.before(div)
             }
-            //クリック時に追加じゃないと後でこのHTMLに追加する処理が追加できない
+            //なぜここが動くのか不明
+            //なんかclosestで親を手当り次第探し回ってるから引っかからなかったらnullがでるっぽい？
             //console.log(framedom.getElementById("view-dec-list"))
-            framedom.getElementById("view-dec-list").style.display = "";
+            framedom.body.onclick = (e) => {
+                //console.log(framedom.querySelector("#dec-list"))
+                if (e.target.closest("#dec-list")!=null) {
+                    //console.log(e.target+"view-dec-list")
+                    framedom.getElementById("view-dec-list").style.display = "";
+                } else if(e.target.closest("#view-dec-list")==null){
+                    //console.log(e.target+"dec-list")
+                    framedom.getElementById("view-dec-list").style.display = "none";
+                }else {
+                    console.log("click");
+                }
+            }
+           
 
             //動かない
             //Mouseが上に来たときに色が変わるようにしたい
@@ -214,17 +228,6 @@ let initDecUI = () => {
                     }
                 }
             }
-            //console.log("check")
-            //動かねぇ
-            //documentのdeclist以外のどこかをクリックしたらdeclistが消える
-            $(framedom).onclick = (e) => {
-                console.log(e)
-                if (!e.target.closest('#dec-list').length) {
-                    framedom.getElementById("dec-list").style.display = "none";
-                } else {
-                    console.log("click");
-                }
-            };
         }
     })
 }

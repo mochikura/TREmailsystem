@@ -14,21 +14,23 @@ let loadScript = (url, callback) => {
     }
     document.getElementsByTagName('head')[0].appendChild(script)
 }
+
 //他サーバから取り寄せたAPIとかファイルをJSに読み込ませたいときに使う
 let filedom/*, fileEnc*/;
 window.onload = () => {
     mcl.init(0).then(() => {
     })
-    console.log(document.documentElement.clientWidth+" "+document.documentElement.clientHeight)
-    //window.resizeBy(0,22)
+    //console.log(document.documentElement.clientWidth+" "+document.documentElement.clientHeight)
+    //filedomは、使用するウィンドウのdom要素
     filedom = document.getElementsByTagName('html')[0].children[1].children[0].contentWindow.document
     initEncUI();
-    initFileEnc();
 
 }
 
 let initEncUI = () => {
+    //menuはメール送信などの並び
     let menu = filedom.getElementById('topMenu')
+    //menuの更に上に暗号化・署名用の場所を差し込む
     let encdiv = filedom.createElement('div')
     encdiv.innerHTML = `
     <div style="margin: 10px 20px 10px;">
@@ -54,6 +56,24 @@ let initEncUI = () => {
     <input type="file" id="encfile" style="display:none;">
     </div>`
     menu.before(encdiv)
+
+    let passtd=filedom.createElement('td')
+    passtd.setAttribute('style','padding-left: 6px;')
+    passtd.innerHTML=`
+    <div class="fromnameWrap" style="border-color: rgb(170, 170, 170); width: 120px;">
+	<input id="passwordIBS" type="password" class="fromname outline" placeholder="Password" maxlength="32" tabindex="1" style="height: 18px; width: 116px;" autocomplete="off">
+	</div>`
+    let senderWrap=filedom.getElementById("headerWrap").children[0].children[0].children[0].children[2].children[0].children[0].children[0]
+    senderWrap.append(passtd)
+
+    let signintd=filedom.createElement('td')
+    signintd.setAttribute('style','padding-left: 6px;')
+    signintd.innerHTML=`
+    <div><span class="roundTypeBtn"><span class="roundTypeBtnInner" id="sigsignin">サインイン</span></span>
+    </div>`
+    senderWrap.append(signintd)
+
+    console.log(senderWrap)
     let filedata=filedom.getElementById("encfile")
     filedom.getElementById("selectEnc").onchange = function () {
         let encValue = filedom.getElementById("selectEnc").value
@@ -111,11 +131,6 @@ let initEncUI = () => {
         //encibe_file(datetrim(dateset.value));
         alert("IBEencode_start")
     }
-}
-
-let initFileEnc = () => {
-    //console.log(fileEnc);
-    //fileEnc.setAttribute("onchange", "setFile(this.files);");
 }
 
 /*

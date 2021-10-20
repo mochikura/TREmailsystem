@@ -45,33 +45,10 @@ function decpagesize(decdomsize) {
     console.log(framesize + " " + menusize + " " + decdomsize + " " + (framesize - decdomsize - menusize))
     return framesize - decdomsize - menusize
 }
-/*
-window.onresize=()=>{
-    switch(resizeflag){
-        case 0:
-            break;
-        case 1:
-            framedom.getElementById("viewmail-main").style.height = decpagesize(0) + "px"
-            break;
-        case 2:
-            framedom.getElementById("viewmail-main").style.height = decpagesize(71) + "px"
-            break;
-        case 3:
-            framedom.getElementById("viewmail-main").style.height = decpagesize(48) + "px"
-            break;
-        case 4:
-            framedom.getElementById("viewmail-main").style.height = decpagesize(73) + "px"
-            break;
 
-    }
-}*/
-
-var timeoutId ;
-
+var timeoutId;
 window.addEventListener( "resize", function () {
-	// リサイズを停止して500ms後に終了とする
 	clearTimeout( timeoutId ) ;
-
 	timeoutId = setTimeout( function () {
 		switch(resizeflag){
             case 0:
@@ -171,8 +148,8 @@ let initDecUI = () => {
     let ibehtml = `
     <div style="margin: 0 0 2px 0; padding: 5px 0 46px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB; line-height:26px; cursor: pointer;">
     <h3 style="line-height:15px;">File IBE Sign in</h3><ul style="padding:2px 0 9px 0;">
-    <li style="margin-right:4px;"><input id="emailIBS" type="text" placeholder="email" style="height: 18px;"></li>
-    <li style="margin-right:4px;"><input id="passwordIBS" type="password" placeholder="Password" style="height: 18px;"></li>
+    <li style="margin-right:4px;"><input id="emailIBS" type="text" placeholder="email" style="height: 18px;" autocomplete="off"></li>
+    <li style="margin-right:4px;"><input id="passwordIBS" type="password" placeholder="Password" style="height: 18px;" autocomplete="off"></li>
     <li style="margin-right:4px;"><a class="roundTypeBtn" id="ibedecset"><span class="roundTypeBtnInner">ファイルを選択</span></a></li>
     <li style="margin-right:4px;"><a class="roundTypeBtn" id="ibedecstart"><span class="roundTypeBtnInner">サインイン&復号</span></a></li>
     <li><a href="https://key.project15.tk/signup" target="_blank" rel="noopener norefferer">Sign Up</a></li><br>

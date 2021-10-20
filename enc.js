@@ -2,6 +2,7 @@ let enctre_file = (enc_time) => {
     //enc_time:公開鍵・公開日時
     reader.onload = async function (fdata) {
         let P1 = getParam1()
+        console.log(P1)
         //P1パラメータis何？
         //let P2 = getParam2()
         //P2パラメータis何？

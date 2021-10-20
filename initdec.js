@@ -36,10 +36,62 @@ let initDec = () => {
     obs.disconnect()
 }
 
+let resizeflag=0;
 //レイアウト調整用
-function mailsize(decdomsize) {
-
+function decpagesize(decdomsize) {
+    console.log(iframe)
+    let framesize = iframe.clientHeight;
+    let menusize = framedom.getElementById("mbox-btn-list").clientHeight
+    console.log(framesize + " " + menusize + " " + decdomsize + " " + (framesize - decdomsize - menusize))
+    return framesize - decdomsize - menusize
 }
+/*
+window.onresize=()=>{
+    switch(resizeflag){
+        case 0:
+            break;
+        case 1:
+            framedom.getElementById("viewmail-main").style.height = decpagesize(0) + "px"
+            break;
+        case 2:
+            framedom.getElementById("viewmail-main").style.height = decpagesize(71) + "px"
+            break;
+        case 3:
+            framedom.getElementById("viewmail-main").style.height = decpagesize(48) + "px"
+            break;
+        case 4:
+            framedom.getElementById("viewmail-main").style.height = decpagesize(73) + "px"
+            break;
+
+    }
+}*/
+
+var timeoutId ;
+
+window.addEventListener( "resize", function () {
+	// リサイズを停止して500ms後に終了とする
+	clearTimeout( timeoutId ) ;
+
+	timeoutId = setTimeout( function () {
+		switch(resizeflag){
+            case 0:
+                break;
+            case 1:
+                framedom.getElementById("viewmail-main").style.height = decpagesize(0) + "px"
+                break;
+            case 2:
+                framedom.getElementById("viewmail-main").style.height = decpagesize(71) + "px"
+                break;
+            case 3:
+                framedom.getElementById("viewmail-main").style.height = decpagesize(48) + "px"
+                break;
+            case 4:
+                framedom.getElementById("viewmail-main").style.height = decpagesize(73) + "px"
+                break;
+    
+        }
+	}, 50 ) ;
+} ) ;
 
 let initDecUI = () => {
     let RecvByIBS = () => {
@@ -54,10 +106,12 @@ let initDecUI = () => {
     IDベース署名検証
     </span></a></li>
     <li id="dec-list" class="action_mail"><a class="roundTypeBtn"><span class="roundTypeBtnInner"><span class="ico_action deep_td">
-    選択してください
+    ファイル暗号化
     </span></span></a></li>
     `
     btndiv.append(li)
+    framedom.getElementById("viewmail-main").style.height = decpagesize(0) + "px"
+    resizeflag=1
     let veripage = framedom.createElement('div')
     veripage.setAttribute('id', 'decPage')
     veripage.setAttribute('style', 'width:100%')
@@ -74,11 +128,12 @@ let initDecUI = () => {
     </div>`
     framedom.getElementById("VeriIBS").onclick = function () {
         if (framedom.getElementById("decpage") == null) {
-            //page.style.margin="0 0 9px 0";
             page.after(decpage)
         }
         decpage.innerHTML = verihtml
-        framedom.getElementById("viewmail-main").style.height = "230px"
+        
+        framedom.getElementById("viewmail-main").style.height = decpagesize(71) + "px"
+        resizeflag=2
         framedom.getElementById("VeriSignIn").onclick = RecvByIBS
     }
     let decdiv = framedom.getElementById('viewmail-main')
@@ -97,6 +152,7 @@ let initDecUI = () => {
     <img src="../extension/images/base/ico_noicon.gif" style="vertical-align:-3px;">
     <span unselectable="on">タイムリリース暗号</span>
     </nobr></div></div></div>
+    
     <div id="ibedec" class="b-m-item" unselectable="on" title="IDベース暗号">
     <div class="b-m-ibody" unselectable="on">
     <div style="margin-right:8px; overflow:hidden;">
@@ -145,23 +201,24 @@ let initDecUI = () => {
             //console.log(framedom.getElementById("view-dec-list"))
             framedom.body.onclick = (e) => {
                 //console.log(framedom.querySelector("#dec-list"))
-                if (e.target.closest("#dec-list")!=null) {
+                if (e.target.closest("#dec-list") != null) {
                     //console.log(e.target+"view-dec-list")
                     framedom.getElementById("view-dec-list").style.display = "";
-                } else if(e.target.closest("#view-dec-list")==null){
+                } else if (e.target.closest("#view-dec-list") == null) {
                     //console.log(e.target+"dec-list")
                     framedom.getElementById("view-dec-list").style.display = "none";
-                }else {
-                    console.log("click");
+                } else {
                 }
             }
-           
+
 
             //動かない
             //Mouseが上に来たときに色が変わるようにしたい
-            framedom.getElementById("tredec").onMouseOver = function () {
-                framedom.getElementById("tredec").className = 'b-m-ifocus !important';
-                framedom.getElementById("ibedec").className = 'b-m-item !important';
+            framedom.getElementById("tredec").onmouseover = function () {
+                framedom.getElementById("tredec").className = 'b-m-ifocus';
+            }
+            framedom.getElementById("tredec").onmouseout = function () {
+                framedom.getElementById("tredec").className = 'b-m-item';
             }
             //console.log(framedom.getElementById("tredec"))
 
@@ -173,7 +230,8 @@ let initDecUI = () => {
                     page.after(decpage)
                 }
                 decpage.innerHTML = trehtml
-                framedom.getElementById("viewmail-main").style.height = "244px"
+                framedom.getElementById("viewmail-main").style.height = decpagesize(48) + "px"
+                resizeflag=3
                 framedom.getElementById("tredecfile").onclick = () => {
                     framedom.getElementById("tredecfile").value = ""
                 }
@@ -196,9 +254,11 @@ let initDecUI = () => {
 
             //動かない
             //Mouseが上に来たときに色が変わるようにしたい
-            framedom.getElementById("ibedec").onMouseOver = function () {
-                framedom.getElementById("tredec").className = 'b-m-item';
+            framedom.getElementById("ibedec").onmouseover = function () {
                 framedom.getElementById("ibedec").className = 'b-m-ifocus';
+            }
+            framedom.getElementById("ibedec").onmouseout = function () {
+                framedom.getElementById("ibedec").className = 'b-m-item';
             }
 
             //クリックしたら消える
@@ -209,7 +269,7 @@ let initDecUI = () => {
                     page.after(decpage)
                 }
                 decpage.innerHTML = ibehtml
-                framedom.getElementById("viewmail-main").style.height = "218px"
+                framedom.getElementById("viewmail-main").style.height = decpagesize(73) + "px"
                 framedom.getElementById("ibedecfile").onclick = () => {
                     framedom.getElementById("ibedecfile").value = ""
                     framedom.getElementById("decfilename").innerHTML = "ファイルが選択されていません"

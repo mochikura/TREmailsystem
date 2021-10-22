@@ -15,12 +15,14 @@ let loadScript = (url, callback) => {
     document.getElementsByTagName('head')[0].appendChild(script)
 }
 let decdom, obs, iframe, framedom;
+//ややこしいのが、元画面がフレームで分かれているので、それぞれdocumentを別に設定する必要がある
 window.onload = () => {
     mcl.init(0).then(() => {
     })
     let _htm = document.getElementsByTagName('html')
     decdom = _htm[0].children[1].children[0].contentWindow.document
     //console.log(decdom)
+    //frameが読み込まれるたびにこのinitdecを実行する必要あり
     obs = new MutationObserver(() => { initDec() })
     let config = { childList: true }
     obs.observe(decdom.getElementById("contents"), config)
@@ -46,6 +48,7 @@ function decpagesize(decdomsize) {
     return framesize - decdomsize - menusize
 }
 
+//画面サイズが変わるたびにフレームのサイズを変更する必要がある
 var timeoutId;
 window.addEventListener( "resize", function () {
 	clearTimeout( timeoutId ) ;
@@ -71,12 +74,12 @@ window.addEventListener( "resize", function () {
 } ) ;
 
 let initDecUI = () => {
+    //署名検証
     let RecvByIBS = () => {
         alert("Veristart")
     }
-    //console.log(framedom)
+    //ボタン追加
     let btndiv = framedom.getElementById('mbox-btn-list')
-    //console.log(div)
     let li = framedom.createElement('li')
     li.innerHTML = `
     <li id="VeriIBS" class="action_mail bar_long"><a class="roundTypeBtn"><span class="roundTypeBtnInner">
@@ -87,8 +90,10 @@ let initDecUI = () => {
     </span></span></a></li>
     `
     btndiv.append(li)
+    //画面リサイズ
     framedom.getElementById("viewmail-main").style.height = decpagesize(0) + "px"
     resizeflag=1
+    //署名検証のレイアウト
     let veripage = framedom.createElement('div')
     veripage.setAttribute('id', 'decPage')
     veripage.setAttribute('style', 'width:100%')
@@ -103,18 +108,20 @@ let initDecUI = () => {
     <li><a href="https://key.project15.tk/signup" target="_blank" rel="noopener norefferer">Sign Up</a></li></ul><br><br>
     <p id="log" style="margin-top:6px;">情報を入力してサインインしてください</p>
     </div>`
+    //ボタン押したらこのレイアウトが追加される
     framedom.getElementById("VeriIBS").onclick = function () {
         if (framedom.getElementById("decpage") == null) {
             page.after(decpage)
         }
         decpage.innerHTML = verihtml
-        
+        //画面リサイズ
         framedom.getElementById("viewmail-main").style.height = decpagesize(71) + "px"
         resizeflag=2
+        //署名検証場所
         framedom.getElementById("VeriSignIn").onclick = RecvByIBS
     }
+    //ファイル復号方法のレイアウト
     let decdiv = framedom.getElementById('viewmail-main')
-    //console.log(decdiv)
     let div = framedom.createElement('div')
     div.setAttribute('class', 'deep_td b-m-mpanel')
     div.setAttribute('unselectable', 'on')
@@ -139,6 +146,7 @@ let initDecUI = () => {
     </nobr></div></div></div>
     `
 
+    //ファイル復号場所のレウアウト
     let page = framedom.getElementById("mbox-mail-header")
     let decpage = framedom.createElement('div')
     decpage.setAttribute('id', 'decPage')
@@ -156,7 +164,7 @@ let initDecUI = () => {
     <span id="decfilename" style="line-height:15px;">ファイルが選択されていません</span>
     <input type="file" id="ibedecfile" style="display:none;">
     </div>`
-
+    //IBE
     let trehtml = `
     <div style="margin: 0 0 2px 0; padding: 9px 0 9px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB; line-height:26px; cursor: pointer;">
     <a class="roundTypeBtn" id="tredecset"><span class="roundTypeBtnInner">ファイルを選択</span></a>
@@ -164,20 +172,21 @@ let initDecUI = () => {
     <a class="roundTypeBtn" id="tredecstart"><span class="roundTypeBtnInner">復号</span></a>
     <input type="file" id="tredecfile" style="display:none;">
     </div>`
-    /*<input type="file" id="dectrefile">*/
+    //TRE
 
-    //documentがreadyしきってからじゃないとだめかも？
-    //console.log(framedom.getElementById("view-dec-list"))
+    
+    //documentがreadyしきってからじゃないとhtmlの挿入ができないっぽい
     $(document).ready(function () {
         framedom.getElementById("dec-list").onclick = function () {
             if (framedom.getElementById("view-dec-list") == null) {
                 decdiv.before(div)
             }
+
+            //復号方法の設定以外の場所をクリックしたらそのレイアウトが消えるようにする
             //なぜここが動くのか不明
             //なんかclosestで親を手当り次第探し回ってるから引っかからなかったらnullがでるっぽい？
             //console.log(framedom.getElementById("view-dec-list"))
             framedom.body.onclick = (e) => {
-                //console.log(framedom.querySelector("#dec-list"))
                 if (e.target.closest("#dec-list") != null) {
                     //console.log(e.target+"view-dec-list")
                     framedom.getElementById("view-dec-list").style.display = "";
@@ -188,27 +197,26 @@ let initDecUI = () => {
                 }
             }
 
-
-            //動かない
-            //Mouseが上に来たときに色が変わるようにしたい
+            //Mouseが上に来たときに色が変わるようにする
+            //mouseoverは上に乗ったら、mouseoutは上から外れたら
             framedom.getElementById("tredec").onmouseover = function () {
                 framedom.getElementById("tredec").className = 'b-m-ifocus';
             }
             framedom.getElementById("tredec").onmouseout = function () {
                 framedom.getElementById("tredec").className = 'b-m-item';
             }
-            //console.log(framedom.getElementById("tredec"))
 
-            //クリックしたら消える
+            //TREを押したらそっちのレイアウトが出るようにする
             framedom.getElementById("tredec").onclick = function () {
                 framedom.getElementById("view-dec-list").style.display = "none";
                 if (framedom.getElementById("decpage") == null) {
-                    //page.style.margin="0 0 9px 0";
                     page.after(decpage)
                 }
                 decpage.innerHTML = trehtml
+                //画面リサイズ
                 framedom.getElementById("viewmail-main").style.height = decpagesize(48) + "px"
                 resizeflag=3
+                //ファイル選択しようとしたらファイルを消す
                 framedom.getElementById("tredecfile").onclick = () => {
                     framedom.getElementById("tredecfile").value = ""
                 }
@@ -216,6 +224,8 @@ let initDecUI = () => {
                     framedom.getElementById("tredecfile").click()
                     framedom.getElementById("decfilename").innerHTML = "ファイルが選択されていません"
                 }
+
+                //復号部分
                 framedom.getElementById("tredecstart").onclick = function () {
                     alert(framedom.getElementById("tredecfile").files[0].name + " TREstart")
                     let file = filedom.getElementById("tredecfile").files[0];
@@ -223,14 +233,15 @@ let initDecUI = () => {
                     reader.readAsText(file);
                     dectre_file()
                 }
+                //ファイル名を表示
                 framedom.getElementById("tredecfile").onchange = function () {
                     framedom.getElementById("decfilename").innerHTML = framedom.getElementById("tredecfile").files[0].name;
                 };
 
             }
 
-            //動かない
-            //Mouseが上に来たときに色が変わるようにしたい
+            //Mouseが上に来たときに色が変わるようにする
+            //mouseoverは上に乗ったら、mouseoutは上から外れたら
             framedom.getElementById("ibedec").onmouseover = function () {
                 framedom.getElementById("ibedec").className = 'b-m-ifocus';
             }
@@ -238,15 +249,17 @@ let initDecUI = () => {
                 framedom.getElementById("ibedec").className = 'b-m-item';
             }
 
-            //クリックしたら消える
+            //TREを押したらそっちのレイアウトが出るようにする
             framedom.getElementById("ibedec").onclick = function () {
                 framedom.getElementById("view-dec-list").style.display = "none";
                 if (framedom.getElementById("decpage") == null) {
-                    //page.style.margin="0 0 9px 0";
                     page.after(decpage)
                 }
                 decpage.innerHTML = ibehtml
+                //画面リサイズ
                 framedom.getElementById("viewmail-main").style.height = decpagesize(73) + "px"
+                resizeflag=4
+                //ファイル選択しようとしたらファイルを消す
                 framedom.getElementById("ibedecfile").onclick = () => {
                     framedom.getElementById("ibedecfile").value = ""
                     framedom.getElementById("decfilename").innerHTML = "ファイルが選択されていません"
@@ -257,6 +270,7 @@ let initDecUI = () => {
                 framedom.getElementById("ibedecfile").onchange = function () {
                     framedom.getElementById("decfilename").innerHTML = framedom.getElementById("ibedecfile").files[0].name;
                 };
+                //ファイル復号部分
                 framedom.getElementById("ibedecstart").onclick = () => {
                     if (framedom.getElementById("ibedecfile") != "") {
                         alert(framedom.getElementById("emailIBS").value + " " + framedom.getElementById("ibedecfile").files[0].name)

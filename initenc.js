@@ -57,6 +57,7 @@ let initEncUI = () => {
     </div>`
     menu.before(encdiv)
 
+    //署名検証用のパスワードを入れる場所
     let passtd=filedom.createElement('td')
     passtd.setAttribute('style','padding-left: 6px;')
     passtd.innerHTML=`
@@ -66,6 +67,7 @@ let initEncUI = () => {
     let senderWrap=filedom.getElementById("headerWrap").children[0].children[0].children[0].children[2].children[0].children[0].children[0]
     senderWrap.append(passtd)
 
+    //署名検証用のログインボタン
     let signintd=filedom.createElement('td')
     signintd.setAttribute('style','padding-left: 6px;')
     signintd.innerHTML=`
@@ -73,6 +75,7 @@ let initEncUI = () => {
     </div>`
     senderWrap.append(signintd)
 
+    //上部のファイルエンコード手段を選ぶ場所の選択による表示切り替え
     console.log(senderWrap)
     let filedata=filedom.getElementById("encfile")
     filedom.getElementById("selectEnc").onchange = function () {
@@ -86,6 +89,7 @@ let initEncUI = () => {
         }
     }
 
+    //ファイル選択したら一旦ファイル選択を解除
     filedom.getElementById("trefileset").onclick = () => {
         filedata.click()
         filedom.getElementById("trefilename").innerHTML = "ファイルが選択されていません"
@@ -99,11 +103,14 @@ let initEncUI = () => {
     filedata.onclick=()=>{
         filedata.value=""
     }
+    //ファイル名の表示
     filedata.onchange=()=>{
         console.log(filedom)
         filedom.getElementById("trefilename").innerHTML= filedata.files[0].name
         filedom.getElementById("ibefilename").innerHTML= filedata.files[0].name
     }
+
+    //TREの暗号化ボタンを押したとき
     let dateset=filedom.getElementById("date");
     filedom.getElementById("trefileget").onclick = () =>{
         if(filedata.value==""){
@@ -119,6 +126,9 @@ let initEncUI = () => {
         reader.readAsText(file);
         enctre_file(datetrim(dateset.value));
     }
+
+    //IBEの暗号化ボタンを押したとき
+    //※今後ログイン失敗時のアラートが必要
     filedom.getElementById("ibefileget").onclick = () =>{
         if(filedom.getElementById("encfile").value==""){
             alert("ファイルが選択されていません")
@@ -182,6 +192,7 @@ let veriSign = (P_KEY, msg, P1, P2, Ppub, k) => {
 //謎、必要性がわからない、署名検証？
 */
 
+//これいらないかも
 function getSubstring(str, string1, string2) {
     index1 = str.indexOf(string1) + string1.length + 1
     index2 = str.indexOf(string2)

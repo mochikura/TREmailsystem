@@ -1,3 +1,12 @@
+let initFirebase = () => {
+    const config = {
+        apiKey: "AIzaSyCUrozEOMGg8d-ctz_xDnIWPIGNbZAuPTo",
+        databaseURL: "https://ibs-auth-d749c.firebaseio.com",
+        storageBucket: "ibs-auth-d749c.appspot.com",
+    };
+    firebase.initializeApp(config);
+}
+
 let loadScript = (url, callback) => {
     const script = document.createElement('script')
     script.type = 'text/javascript'
@@ -34,26 +43,27 @@ let initDec = () => {
     iframe.onload = () => {
         framedom = iframe.contentWindow.document;
         initDecUI();
+        //initFirebase();
     }
     obs.disconnect()
 }
 
-let resizeflag=0;
+let resizeflag = 0;
 //レイアウト調整用
 function decpagesize(decdomsize) {
     console.log(iframe)
     let framesize = iframe.clientHeight;
     let menusize = framedom.getElementById("mbox-btn-list").clientHeight
-    console.log(framesize + " " + menusize + " " + decdomsize + " " + (framesize - decdomsize - menusize))
+    //console.log(framesize + " " + menusize + " " + decdomsize + " " + (framesize - decdomsize - menusize))
     return framesize - decdomsize - menusize
 }
 
 //画面サイズが変わるたびにフレームのサイズを変更する必要がある
 var timeoutId;
-window.addEventListener( "resize", function () {
-	clearTimeout( timeoutId ) ;
-	timeoutId = setTimeout( function () {
-		switch(resizeflag){
+window.addEventListener("resize", function () {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(function () {
+        switch (resizeflag) {
             case 0:
                 break;
             case 1:
@@ -68,10 +78,10 @@ window.addEventListener( "resize", function () {
             case 4:
                 framedom.getElementById("viewmail-main").style.height = decpagesize(73) + "px"
                 break;
-    
+
         }
-	}, 50 ) ;
-} ) ;
+    }, 50);
+});
 
 let initDecUI = () => {
     //署名検証
@@ -92,7 +102,7 @@ let initDecUI = () => {
     btndiv.append(li)
     //画面リサイズ
     framedom.getElementById("viewmail-main").style.height = decpagesize(0) + "px"
-    resizeflag=1
+    resizeflag = 1
     //署名検証のレイアウト
     let veripage = framedom.createElement('div')
     veripage.setAttribute('id', 'decPage')
@@ -116,9 +126,21 @@ let initDecUI = () => {
         decpage.innerHTML = verihtml
         //画面リサイズ
         framedom.getElementById("viewmail-main").style.height = decpagesize(71) + "px"
-        resizeflag=2
+        resizeflag = 2
         //署名検証場所
-        framedom.getElementById("VeriSignIn").onclick = RecvByIBS
+        framedom.getElementById("VeriSignIn").onclick = () => {
+            RecvByIBS
+            console.log("Receive")
+            /*firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
+                res.user.getIdToken().then(idToken => {
+                    localStorage.setItem('jwt', idToken.toString())
+                    RecvByIBS
+                })
+            }, err => {
+                //alert(err.message)
+                alert('Failed sign in')
+            })*/
+        }
     }
     //ファイル復号方法のレイアウト
     let decdiv = framedom.getElementById('viewmail-main')
@@ -174,7 +196,7 @@ let initDecUI = () => {
     </div>`
     //TRE
 
-    
+
     //documentがreadyしきってからじゃないとhtmlの挿入ができないっぽい
     $(document).ready(function () {
         framedom.getElementById("dec-list").onclick = function () {
@@ -215,7 +237,7 @@ let initDecUI = () => {
                 decpage.innerHTML = trehtml
                 //画面リサイズ
                 framedom.getElementById("viewmail-main").style.height = decpagesize(48) + "px"
-                resizeflag=3
+                resizeflag = 3
                 //ファイル選択しようとしたらファイルを消す
                 framedom.getElementById("tredecfile").onclick = () => {
                     framedom.getElementById("tredecfile").value = ""
@@ -249,7 +271,7 @@ let initDecUI = () => {
                 framedom.getElementById("ibedec").className = 'b-m-item';
             }
 
-            //TREを押したらそっちのレイアウトが出るようにする
+            //IBEを押したらそっちのレイアウトが出るようにする
             framedom.getElementById("ibedec").onclick = function () {
                 framedom.getElementById("view-dec-list").style.display = "none";
                 if (framedom.getElementById("decpage") == null) {
@@ -258,7 +280,7 @@ let initDecUI = () => {
                 decpage.innerHTML = ibehtml
                 //画面リサイズ
                 framedom.getElementById("viewmail-main").style.height = decpagesize(73) + "px"
-                resizeflag=4
+                resizeflag = 4
                 //ファイル選択しようとしたらファイルを消す
                 framedom.getElementById("ibedecfile").onclick = () => {
                     framedom.getElementById("ibedecfile").value = ""
@@ -274,6 +296,16 @@ let initDecUI = () => {
                 framedom.getElementById("ibedecstart").onclick = () => {
                     if (framedom.getElementById("ibedecfile") != "") {
                         alert(framedom.getElementById("emailIBS").value + " " + framedom.getElementById("ibedecfile").files[0].name)
+                        /*
+                        firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
+                            res.user.getIdToken().then(idToken => {
+                                localStorage.setItem('jwt', idToken.toString())
+                                alert('Successful get token')
+                            })
+                        }, err => {
+                            //alert(err.message)
+                            alert('Failed sign in')
+                        })*/
                     } else {
                         alert("ファイルが設定されていません")
                     }

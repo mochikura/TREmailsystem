@@ -1,3 +1,12 @@
+let initFirebase = () => {
+    const config = {
+        apiKey: "AIzaSyCUrozEOMGg8d-ctz_xDnIWPIGNbZAuPTo",
+        databaseURL: "https://ibs-auth-d749c.firebaseio.com",
+        storageBucket: "ibs-auth-d749c.appspot.com",
+    };
+    firebase.initializeApp(config);
+}
+
 let loadScript = (url, callback) => {
     const script = document.createElement('script')
     script.type = 'text/javascript'
@@ -24,7 +33,7 @@ window.onload = () => {
     //filedomは、使用するウィンドウのdom要素
     filedom = document.getElementsByTagName('html')[0].children[1].children[0].contentWindow.document
     initEncUI();
-
+    //initFirebase();
 }
 
 let initEncUI = () => {
@@ -58,34 +67,34 @@ let initEncUI = () => {
     menu.before(encdiv)
 
     //署名検証用のパスワードを入れる場所
-    let passtd=filedom.createElement('td')
-    passtd.setAttribute('style','padding-left: 6px;')
-    passtd.innerHTML=`
+    let passtd = filedom.createElement('td')
+    passtd.setAttribute('style', 'padding-left: 6px;')
+    passtd.innerHTML = `
     <div class="fromnameWrap" style="border-color: rgb(170, 170, 170); width: 120px;">
-	<input id="passwordIBS" type="password" class="fromname outline" placeholder="Password" maxlength="32" tabindex="1" style="height: 18px; width: 116px;" autocomplete="off">
+	<input id="passwordSign" type="password" class="fromname outline" placeholder="Password" maxlength="32" tabindex="1" style="height: 18px; width: 116px;" autocomplete="off">
 	</div>`
-    let senderWrap=filedom.getElementById("headerWrap").children[0].children[0].children[0].children[2].children[0].children[0].children[0]
+    let senderWrap = filedom.getElementById("headerWrap").children[0].children[0].children[0].children[2].children[0].children[0].children[0]
     senderWrap.append(passtd)
 
     //署名検証用のログインボタン
-    let signintd=filedom.createElement('td')
-    signintd.setAttribute('style','padding-left: 6px;')
-    signintd.innerHTML=`
+    let signintd = filedom.createElement('td')
+    signintd.setAttribute('style', 'padding-left: 6px;')
+    signintd.innerHTML = `
     <div><span class="roundTypeBtn"><span class="roundTypeBtnInner" id="sigsignin">サインイン</span></span>
     </div>`
     senderWrap.append(signintd)
 
     //上部のファイルエンコード手段を選ぶ場所の選択による表示切り替え
-    console.log(senderWrap)
-    let filedata=filedom.getElementById("encfile")
+    //console.log(senderWrap)
+    let filedata = filedom.getElementById("encfile")
     filedom.getElementById("selectEnc").onchange = function () {
         let encValue = filedom.getElementById("selectEnc").value
-        if(encValue=="tre"){
-            filedom.getElementById("tre").style.display="";
-            filedom.getElementById("ibe").style.display="none";
-        }else if(encValue=="ibe"){
-            filedom.getElementById("tre").style.display="none";
-            filedom.getElementById("ibe").style.display="";
+        if (encValue == "tre") {
+            filedom.getElementById("tre").style.display = "";
+            filedom.getElementById("ibe").style.display = "none";
+        } else if (encValue == "ibe") {
+            filedom.getElementById("tre").style.display = "none";
+            filedom.getElementById("ibe").style.display = "";
         }
     }
 
@@ -100,24 +109,24 @@ let initEncUI = () => {
         filedom.getElementById("trefilename").innerHTML = "ファイルが選択されていません"
         filedom.getElementById("ibefilename").innerHTML = "ファイルが選択されていません"
     }
-    filedata.onclick=()=>{
-        filedata.value=""
+    filedata.onclick = () => {
+        filedata.value = ""
     }
     //ファイル名の表示
-    filedata.onchange=()=>{
+    filedata.onchange = () => {
         console.log(filedom)
-        filedom.getElementById("trefilename").innerHTML= filedata.files[0].name
-        filedom.getElementById("ibefilename").innerHTML= filedata.files[0].name
+        filedom.getElementById("trefilename").innerHTML = filedata.files[0].name
+        filedom.getElementById("ibefilename").innerHTML = filedata.files[0].name
     }
 
     //TREの暗号化ボタンを押したとき
-    let dateset=filedom.getElementById("date");
-    filedom.getElementById("trefileget").onclick = () =>{
-        if(filedata.value==""){
+    let dateset = filedom.getElementById("date");
+    filedom.getElementById("trefileget").onclick = () => {
+        if (filedata.value == "") {
             alert("ファイルが選択されていません")
             return
         }
-        if(datetrim(dateset.value)=="error"){
+        if (datetrim(dateset.value) == "error") {
             alert("日付が選択されていません")
             return
         }
@@ -129,17 +138,44 @@ let initEncUI = () => {
 
     //IBEの暗号化ボタンを押したとき
     //※今後ログイン失敗時のアラートが必要
-    filedom.getElementById("ibefileget").onclick = () =>{
-        if(filedom.getElementById("encfile").value==""){
+    filedom.getElementById("ibefileget").onclick = () => {
+        if (filedom.getElementById("encfile").value == "") {
             alert("ファイルが選択されていません")
             return
         }
+        /*
+        firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
+            res.user.getIdToken().then(idToken => {
+                localStorage.setItem('jwt', idToken.toString())
+                let file = filedata.files[0];
+                reader = new FileReader();
+                reader.readAsText(file);
+                //encibe_file(datetrim(dateset.value));
+                alert("IBEencode_start")
+            })
+        }, err => {
+            //alert(err.message)
+            alert('Failed sign in')
+        })*/
         //ここにサインイン処理を追加
-        let file = filedata.files[0];
-        reader = new FileReader();
-        reader.readAsText(file);
-        //encibe_file(datetrim(dateset.value));
-        alert("IBEencode_start")
+    }
+
+    //ログイン時処理
+    filedom.getElementById("sigsignin").onclick = () => {
+        console.log(senderWrap)
+        let email = senderWrap.children[1].children[2].children[0].innerHTML
+        let passwd = document.getElementById("passwordSign")
+        /*
+        firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
+            res.user.getIdToken().then(idToken => {
+                localStorage.setItem('jwt', idToken.toString())
+                alert('Successful get token')
+            })
+        }, err => {
+            //alert(err.message)
+            alert('Failed sign in')
+        })*/
+        alert(email + " signin")
     }
 }
 

@@ -176,6 +176,7 @@ let initEncUI = () => {
             alert('Failed sign in')
         })*/
         alert(email + " signin")
+        createBtn()
     }
 }
 
@@ -239,7 +240,7 @@ function getSubstring(str, string1, string2) {
 
 // by Sona34
 let createBtn = () => {
-    let menu = fileDom.getElementById('topMenu');
+    let menu = filedom.getElementById('topMenu');
     
     let btns = menu.children[0];
 

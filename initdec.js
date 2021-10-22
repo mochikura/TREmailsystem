@@ -129,7 +129,7 @@ let initDecUI = () => {
         resizeflag = 2
         //署名検証場所
         framedom.getElementById("VeriSignIn").onclick = () => {
-            RecvByIBS
+            RecvByIBS()
             console.log("Receive")
             /*firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
                 res.user.getIdToken().then(idToken => {

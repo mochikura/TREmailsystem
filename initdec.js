@@ -134,7 +134,7 @@ let initDecUI = () => {
             /*firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
                 res.user.getIdToken().then(idToken => {
                     localStorage.setItem('jwt', idToken.toString())
-                    RecvByIBS
+                    RecvByIBS()
                 })
             }, err => {
                 //alert(err.message)
@@ -249,11 +249,26 @@ let initDecUI = () => {
 
                 //復号部分
                 framedom.getElementById("tredecstart").onclick = function () {
-                    alert(framedom.getElementById("tredecfile").files[0].name + " TREstart")
-                    let file = filedom.getElementById("tredecfile").files[0];
-                    reader = new FileReader();
-                    reader.readAsText(file);
-                    dectre_file()
+                    if (framedom.getElementById("tredecfile").value != "") {
+                        //console.log(framedom.getElementById("ibedecfile").files[0])
+                        alert(framedom.getElementById("tredecfile").files[0].name + " TREstart")
+                        let file = framedom.getElementById("tredecfile").files[0];
+                        reader = new FileReader();
+                        reader.readAsText(file);
+                        dectre_file()
+                        /*
+                        firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
+                            res.user.getIdToken().then(idToken => {
+                                localStorage.setItem('jwt', idToken.toString())
+                                alert('Successful get token')
+                            })
+                        }, err => {
+                            //alert(err.message)
+                            alert('Failed sign in')
+                        })*/
+                    } else {
+                        alert("ファイルが設定されていません")
+                    }
                 }
                 //ファイル名を表示
                 framedom.getElementById("tredecfile").onchange = function () {
@@ -294,8 +309,13 @@ let initDecUI = () => {
                 };
                 //ファイル復号部分
                 framedom.getElementById("ibedecstart").onclick = () => {
-                    if (framedom.getElementById("ibedecfile") != "") {
-                        alert(framedom.getElementById("emailIBS").value + " " + framedom.getElementById("ibedecfile").files[0].name)
+                    if (framedom.getElementById("ibedecfile").value != "") {
+                        //console.log(framedom.getElementById("ibedecfile").files[0])
+                        alert(framedom.getElementById("ibedecfile").files[0].name + " IBEstart")
+                        file = framedom.getElementById("ibedecfile").files[0];
+                        reader = new FileReader();
+                        reader.readAsText(file);
+                        decibe_file()
                         /*
                         firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
                             res.user.getIdToken().then(idToken => {

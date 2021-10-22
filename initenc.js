@@ -130,7 +130,7 @@ let initEncUI = () => {
             alert("日付が選択されていません")
             return
         }
-        let file = filedata.files[0];
+        file = filedata.files[0];
         reader = new FileReader();
         reader.readAsText(file);
         enctre_file(datetrim(dateset.value));
@@ -143,6 +143,11 @@ let initEncUI = () => {
             alert("ファイルが選択されていません")
             return
         }
+        file = filedata.files[0];
+        reader = new FileReader();
+        reader.readAsText(file);
+        //encibe_file()
+        alert("IBEfileOK")
         /*
         firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
             res.user.getIdToken().then(idToken => {

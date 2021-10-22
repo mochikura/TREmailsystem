@@ -15,8 +15,8 @@ let dectre_file = async () => {
         //let R = new mcl.G2()
 
         P1.setStr(Cstr2[1])
-        dec_time=Cstr2[2]
-        if(dateget<dectime){
+        dec_time = Cstr2[2]
+        if (dateget < dectime) {
             alert("まだ復号できない時刻です");
             return;
         }
@@ -34,7 +34,7 @@ let dectre_file = async () => {
         var encfile = Cstr[0]
         var decrypted = CryptoJS.AES.decrypt(encfile, AESkey) //file type + file source.
             .toString(CryptoJS.enc.Latin1) // -> to Latin1
-            //Latin1ってなんだよ→なにやら文字コードのことらしい
+        //Latin1ってなんだよ→なにやら文字コードのことらしい
         /*
         if (!/^data:/.test(decrypted)) {//check dataURL
             alert("あなた宛てのファイルではありません。")
@@ -46,18 +46,17 @@ let dectre_file = async () => {
         window.alert(validity ? "〇有効〇" : "×無効×")
         */
         //DLリンクを生成。
-        if (validity == true) {
-            const a = document.createElement("a")
-            document.body.appendChild(a)
-            a.style = "display:none"
+        const a = document.createElement("a")
+        document.body.appendChild(a)
+        a.style = "display:none"
 
-            a.href = decrypted
+        a.href = decrypted
 
-            a.download = file.name.replace('.encrypted', '')
-            a.click()
-        }
+        a.download = file.name.replace('.encrypted', '')
+        a.click()
+
     }
-    reader.readAsText(file)
+    //reader.readAsText(file)
 }
 
 let decKeyByTRE = async (encKey, time) => {

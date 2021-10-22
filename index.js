@@ -4,43 +4,6 @@ let reader;
 let filetype;
 //他場所でも使うのでグローバルに
 
-/*
-const EncFileGet = document.getElementById("encfileget");
-EncFileGet.addEventListener("click", () => {
-    //try {
-        let file = EncFileAdd.files[0];
-        //alert(file);
-        reader = new FileReader();
-        reader.readAsText(file);
-        enc_file(datetrim(dateset.value));
-        
-        reader.onload = ()=> {
-            let blob = new Blob([reader.result], { type: file.type });
-            let downlink = document.createElement('a');
-            downlink.href = URL.createObjectURL(blob);
-            downlink.download = file.name;
-            downlink.click();
-        }
-    //} catch (error) {
-    //    alert("エラーが発生しました");
-    //}
-}
-)
-*/
-//入力されたファイルを処理してダウンロードする。
-//検証では、テキストファイル以外は不可能だった、他だとどうやるのかは要検証
-/*
-const DecFileGet =document.getElementById("decfileget");
-DecFileGet.addEventListener("click", () => {
-    //try {
-        let file = fileadd.files[0];
-        //alert(file);
-        reader = new FileReader();
-        reader.readAsText(file);
-        dnc_file(datetrim(dateset.value));
-}
-)
-*/
 let datetrim = (date) => {
     let matchtext = /\BT\B/;
     //YYYY-MM-DDThh:mm

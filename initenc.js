@@ -166,8 +166,9 @@ let initEncUI = () => {
     }
 
     //ログイン時処理
+    let sendBtn_flag = false
     filedom.getElementById("sigsignin").onclick = () => {
-        console.log(senderWrap)
+        //console.log(senderWrap)
         let email = senderWrap.children[1].children[2].children[0].innerHTML
         let passwd = document.getElementById("passwordSign")
         /*
@@ -181,7 +182,10 @@ let initEncUI = () => {
             alert('Failed sign in')
         })*/
         alert(email + " signin")
-        createBtn()
+        if (!sendBtn_flag) {
+            createBtn()
+            sendBtn_flag = true;
+        }
     }
 }
 
@@ -246,7 +250,7 @@ function getSubstring(str, string1, string2) {
 // by Sona34
 let createBtn = () => {
     let menu = filedom.getElementById('topMenu');
-    
+
     let btns = menu.children[0];
 
     // create spanTag and setAttribute

@@ -235,3 +235,34 @@ function getSubstring(str, string1, string2) {
     return str.substring(index1, index2)
 }
 // 文章から文字列以降を取得する、どっかで使うならとっておく、使わないなら消す
+
+
+// by Sona34
+let createBtn = () => {
+    let menu = fileDom.getElementById('topMenu');
+    
+    let btns = menu.children[0];
+
+    // create spanTag and setAttribute
+    let span = document.createElement('span');
+    span.setAttribute('class', 'roundTypeBtn');
+    span.setAttribute('asvwidth', '1');
+
+    // create _spanTag and setAttribute
+    let _span = document.createElement('span')
+    _span.setAttribute('class', 'roundTypeBtnInner')
+    _span.onclick = SendByIBS
+    _span.innerText = 'ID署名付きで送信'
+
+    // _span insert into span
+    span.append(_span);
+    // span insert into <div class='topBtns'>
+    btns.prepend(span);
+
+    // debug
+    //console.log(btns);
+}
+
+let SendByIBS = () => {
+    // 未実装
+}

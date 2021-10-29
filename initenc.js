@@ -228,5 +228,33 @@ let createBtn = () => {
 }
 
 let SendByIBS = () => {
-    // 未実装
+
+    let toList = dom.getElementById('tolist');
+    
+    if (toList.children.length == 1) {
+
+        // e-mail addressを取得
+        email = toList.children[0].getAttribute('email');
+        
+        if (isFun(email)) {
+
+            let originalMsg = dom.getElementById('textDoc').value;
+            let msg = originalMsg;
+            if (originalMsg.includes('\n----- Original Message -----')) {
+                msg = originalMsg.before('\n----- Original Message -----');
+            }
+
+            let begin = "\n-----BEGIN SIGNATURE-----\n";
+            //let sigInfo = await signByIBS(msg)
+            let sigInfo = "TEST SIGNATURE";
+            let end = "\n-----END SIGNATURE-----";
+            dom.getElementById('textDoc').value = originalMsg + begin + JSON.stringify(sigInfo) + end;
+        }
+    }
+    dom.getElementById('sendBtn').children[0].click()
+}
+
+let isFun = (email) => {
+    let pattern = /\w@fun.ac.jp$/
+    return pattern.test(email)
 }

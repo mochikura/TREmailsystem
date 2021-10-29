@@ -118,7 +118,7 @@ Dec = Dec_mes(S_TIME, C1_enc, C2_enc);//復号
 
     return:署名文
 */
-/*
+
 let generateSign = (S_KEY, msg, P1, P2, k) => {
     const h2 = new mcl.Fr();
     const h3 = new mcl.Fr();
@@ -134,9 +134,31 @@ let generateSign = (S_KEY, msg, P1, P2, k) => {
     let S_G1 = mcl.mul(h2_h3, k_inv);
 
     return [S_G1, R_G2]
-}*/
+}
 //なにこれ？？？署名を生成してるっぽいけど...恐らく認証に使ってた可能性
 //どうやらP2は署名のみに必要なパラメータっぽい
 
 //[(P1*H(msg)+S_KEY*H(P2*k))*inv(k), P2*k]=[S,R]
 //inv=逆関数？
+
+let signByIBS = async(msg) => {
+    let P1 = getParam1();
+    let P2 = getParam2();
+    let k = new mcl.Fr();
+    k.setByCSPRNG();
+    let idPublicKey = fileDom.getElementById('fromWrap').innerText;
+    console.log("idPublicKey: " + idPublicKey);
+
+    let secretKey = await getSecretKey();
+    
+    let sigInfo = {};
+    let [S,R] = generateSign(secretKey, msg, P1, P2, k);
+
+    sigInfo['P1'] = P1;
+    sigInfo['P2'] = P2;
+    sigInfo['S'] = S;
+    sigInfo['R'] = R;
+
+    return sigInfo;
+}
+

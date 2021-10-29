@@ -43,9 +43,9 @@ let genAESkey = () => {
 */
 
 //でもこの鍵、何に使うの？？？マスター鍵ならわかるけど、2つも必要な理由が不明
-/*
+
 let getSecretKey = async(ID) => {
-    
+    /*    
     let token = getJWT()
 
     if (token === null || typeof token === 'undefined') {
@@ -68,8 +68,14 @@ let getSecretKey = async(ID) => {
     let key = new mcl.G1()
     key.deserialize(data)//byte列だったからデシリアライズしてもとの数字？に戻してる
     return key
+    */
+   
+   
+    //  JWT実装までのTEST秘密鍵生成
+   let key = getParam1();
+   return key;
 }
-*/
+
 //シリアライズ&デシリアライズの処理追加
 //上記と同様
 let getPublicKey = async(P1) => {

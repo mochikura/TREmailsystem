@@ -146,7 +146,7 @@ let signByIBS = async(msg) => {
     let P2 = getParam2();
     let k = new mcl.Fr();
     k.setByCSPRNG();
-    let idPublicKey = frameDom.getElementById('fromWrap').innerText;
+    let idPublicKey = fileDom.getElementById('fromWrap').innerText;
     console.log("idPublicKey: " + idPublicKey);
 
     let secretKey = await getSecretKey();

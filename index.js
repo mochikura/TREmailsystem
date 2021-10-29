@@ -1,7 +1,7 @@
-let filename;
-let file;
-let reader;
-let filetype;
+let filename;//ファイル名
+let file;//ファイル
+let reader;//FileReader
+let filetype;//Fileの形式
 //他場所でも使うのでグローバルに
 
 let datetrim = (date) => {

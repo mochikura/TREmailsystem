@@ -80,8 +80,6 @@ let getPublicKey = async(P1) => {
         console.log('token is none')
         return null
     }
-    
-
 
     let res = await axios.get('https://key.project15.tk/api/publickey', {
         headers: {

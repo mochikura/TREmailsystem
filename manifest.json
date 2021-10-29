@@ -41,8 +41,5 @@
         "all_frmes":true
     }
     ],
-    "browser_action":{
-        "default_popup":"popup.html"
-    },
     "content_security_policy":"script-src 'self' 'wasm-eval' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com/* https://cdn.jsdelivr.net; object-src 'self'"
 }

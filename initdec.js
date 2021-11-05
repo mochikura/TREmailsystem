@@ -334,7 +334,8 @@ let initDecUI = () => {
         }
     })
 }
-
+/*
 let getJWT = () => {
     return localStorage.getItem('jwt')
 }
+*/

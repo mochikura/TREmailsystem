@@ -275,7 +275,7 @@ let createBtn = () => {
 
 let SendByIBS = () => {
 
-    let toList = dom.getElementById('tolist');
+    let toList = filedom.getElementById('tolist');
     
     if (toList.children.length == 1) {
 
@@ -284,7 +284,7 @@ let SendByIBS = () => {
         
         if (isFun(email)) {
 
-            let originalMsg = dom.getElementById('textDoc').value;
+            let originalMsg = filedom.getElementById('textDoc').value;
             let msg = originalMsg;
             if (originalMsg.includes('\n----- Original Message -----')) {
                 msg = originalMsg.before('\n----- Original Message -----');
@@ -294,10 +294,10 @@ let SendByIBS = () => {
             //let sigInfo = await signByIBS(msg)
             let sigInfo = "TEST SIGNATURE";
             let end = "\n-----END SIGNATURE-----";
-            dom.getElementById('textDoc').value = originalMsg + begin + JSON.stringify(sigInfo) + end;
+            filedom.getElementById('textDoc').value = originalMsg + begin + JSON.stringify(sigInfo) + end;
         }
     }
-    dom.getElementById('sendBtn').children[0].click()
+    filedom.getElementById('sendBtn').children[0].click()
 }
 
 let isFun = (email) => {

@@ -11,8 +11,6 @@ let dectre_file = async () => {
         var Cstr2 = fdata.target.result.split(cut_str2);
         let P1 = new mcl.G1()
         let dec_time
-        //let S = new mcl.G1()
-        //let R = new mcl.G2()
 
         P1.setStr(Cstr2[1])
         dec_time = Cstr2[2]
@@ -20,13 +18,10 @@ let dectre_file = async () => {
             alert("まだ復号できない時刻です");
             return;
         }
-        //S.setStr(Cstr2[3])
-        //R.setStr(Cstr2[4])
+
 
         var Cstr = Cstr2[0].split(cut_str);
         var encKey = getC(Cstr[1], Cstr[2])
-        //let time = document.getElementById("date").value
-        //time = time.replaceAll('/', '-')
 
         //復号
         let AESkey = await decKeyByTRE(encKey, time)
@@ -35,16 +30,7 @@ let dectre_file = async () => {
         var decrypted = CryptoJS.AES.decrypt(encfile, AESkey) //file type + file source.
             .toString(CryptoJS.enc.Latin1) // -> to Latin1
         //Latin1ってなんだよ→なにやら文字コードのことらしい
-        /*
-        if (!/^data:/.test(decrypted)) {//check dataURL
-            alert("あなた宛てのファイルではありません。")
-            return false
-        }
-
-        //署名検証
-        let [msg, validity] = await verifySign(decrypted, P1, P2, S, R, srcID, time)
-        window.alert(validity ? "〇有効〇" : "×無効×")
-        */
+        
         //DLリンクを生成。
         const a = document.createElement("a")
         document.body.appendChild(a)

@@ -2,31 +2,6 @@ let enctre_file = async (enc_time) => {
     //enc_time:公開鍵・公開日時
     reader.onload = async function (fdata) {
         let P1 = getParam1()
-        //console.log(P1)
-        //P1パラメータis何？
-        //let P2 = getParam2()
-        //P2パラメータis何？
-        //let k = new mcl.Fr()
-        //Frってなんか乱数を入れるっぽい
-        //k.setByCSPRNG()
-        //setByCSRPNGは乱数を生成するらしい
-        //k.deserialize(k.serialize())
-        //なんでシリアライズしたあとにデシリアライズしてるの？もとに戻るだけでは？
-        /*
-        let P_KEY = enc_time//公開鍵
-        let S_KEY = new mcl.G1()//秘密鍵、これを見るにG1は鍵を入れる？
-        let data = await getSecretKey(P_KEY)//→getkey.js
-        for (let i = 0; i < S_KEY["a_"].length; i++) {
-            S_KEY["a_"][i] = data["a_"][i]
-        }
-        */
-        //なぜか走らないが別に配列に入れてる、配列の要素名がa_なのはなぜ？
-        //→長い文字列をa_で分割しているらしい
-        //でもS_KEYってやつ、署名にしか使ってないな？
-        //→じゃあ必要なのはgetPublickeyとgetSecretkey2だけになる
-
-        //let [S, R] = generateSign(S_KEY, fdata.target.result, P1, P2, k)
-        //下参照、なぜ暗号化なのに署名生成？
         const key = genAESkey() //mcl::Fr
         //なぜここでも鍵を作ってる？
         const encKey = await encKeyByTRE(enc_time, P1, key) //[IDdecに必要な情報, IDencされた鍵]
@@ -71,8 +46,6 @@ let encKeyByTRE = async (enc_time, P1, AESkey) => {
 //x=random
 //P=eclipse
 //s=PKG,master key
-
-//なんで*が＋になっているのか不明
 
 // Enc(m) = [r P, m + h(e(r mpk, H(id)))]
 let TIMEenc = (time, P, mpk, m) => {

@@ -1,7 +1,7 @@
 {
-    "name":"FileTRE test",
+    "name":"mail encryption system",
     "version":"0.1",
-    "description":"File Time Release Encryption for FUN mail system!",
+    "description":"Mail Signature and File Encryption for FUN mail system!",
     "manifest_version":2,
     "content_scripts":[
         {

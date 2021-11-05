@@ -51,7 +51,7 @@ let initDec = () => {
 let resizeflag = 0;
 //レイアウト調整用
 function decpagesize(decdomsize) {
-    console.log(iframe)
+    //console.log(iframe)
     let framesize = iframe.clientHeight;
     let menusize = framedom.getElementById("mbox-btn-list").clientHeight
     //console.log(framesize + " " + menusize + " " + decdomsize + " " + (framesize - decdomsize - menusize))

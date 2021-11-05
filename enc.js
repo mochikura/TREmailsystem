@@ -87,26 +87,6 @@ let TIMEenc = (time, P, mpk, m) => {
     return [mcl.mul(P, r).serializeToHexStr(), mcl.add(m, mcl.hashToFr(e.serialize())).serializeToHexStr()]
 }
 //ここが暗号化本体っぽい？TREに合わせて調節しようね
-/*
-Cだとこんな感じだった
-
-mclBnFr_setStr(&s, s_Str, strlen(s_Str), 10);//PKG マスター鍵
-start_t = clock();
-Time_Str = Time_dec;//公開鍵
-printf("Public Key: %s\n", Time_Str);
-mclBnG1_hashAndMapTo(&Q_TIME, Time_Str, strlen(Time_Str));
-mclBnG1_mul(&S_TIME, &Q_TIME, &s);//時間鍵(秘密鍵)
-mclBnG1_getStr(buf, sizeof(buf), &S_TIME, 16);
-printf("T_TIME: %s\n",buf);
-mclBnFr_setByCSPRNG(&x);
-mclBnFr_setStr(&m, Mes, strlen(Mes), 16);
-encS_t = clock();
-C1_enc = Enc_C1(para2, x);//暗号化
-C2_enc = Enc_C2(s, Q_TIME, para2, x, m);//暗号化
-encE_t = clock();
-decS_t = clock();
-Dec = Dec_mes(S_TIME, C1_enc, C2_enc);//復号
-*/
 
 /*  
     署名文生成

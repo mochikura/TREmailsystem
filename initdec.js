@@ -108,13 +108,19 @@ let initDecUI = () => {
         let divNormalHeader = framedom.getElementById('viewmail-normal-header');
         let time = divNormalHeader.children[0].children[0].children[2].children[1].children[0].children[0].innerText;
         time = time.replaceAll('/', '-');
-
+        
         let plaMsg = recvBody.innerText.split("\n-----BEGIN SIGNATURE-----\n");
+        
         // テキスト部分の分割
-        let payMsg = plaMsg[0];
-        // 署名部分の分割
-        let signat = plaMsg[1].before("\n-----END SIGNATURE-----");
+        payMsg = plaMsg[plaMsg.length - 1];
 
+        // 署名部分の分割
+        let signat = payMsg.replace("\n-----END SIGNATURE-----", "");
+        
+        //署名部分のコンソール表示
+        //console.log(signat);
+        
+        
         // パラメータ生成
         const [P1, P2, S, R] = parseParam(signat);
 

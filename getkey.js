@@ -45,7 +45,7 @@ let genAESkey = () => {
 //でもこの鍵、何に使うの？？？マスター鍵ならわかるけど、2つも必要な理由が不明
 
 let getSecretKey = async(ID) => {
-    /*    
+      /*
     let token = getJWT()
 
     if (token === null || typeof token === 'undefined') {

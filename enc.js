@@ -1,5 +1,4 @@
 let enctre_file = async (enc_time) => {
-    //testdesu
     //enc_time:公開鍵・公開日時
     reader.onload = async function (fdata) {
         let P1 = getParam1()
@@ -108,6 +107,44 @@ encE_t = clock();
 decS_t = clock();
 Dec = Dec_mes(S_TIME, C1_enc, C2_enc);//復号
 */
+let encibe_file = async () => {
+    reader.onload = async function (fdata) {
+        let P1 = getParam1()
+        const key = genAESkey()
+        var id = filedom.getElementById("emailIBS")
+        const enckey = await encKeyByIBE(id, P1, key)
+        const encMsg = CryptoJS.AES.encrypt(fdata.target.result, key.getStr()).toString()
+        const encKey2 = enckey[0].serializeToHexStr() + ' ' + enckey[1].serializeToHexStr()
+        var contents = encMsg + ',' + encKey2
+        var blob_content = new Blob([contents]) //文字列で扱えるように変換
+        //DLリンクを生成
+        const a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display:none";
+        a.href = window.URL.createObjectURL(blob_content)
+        a.download = filename + '.encrypted'//file.name;
+        a.click();
+    }
+}
+
+// Enc(m) = [r P, m + h(e(r mpk, H(id)))]
+let encKeyByIBE = async (id, P1, AESkey) => {
+    let mpk = new mcl.G1()
+    const data = await getPublicKey(P1)
+    for (let i = 0; i < mpk["a_"].length; i++) {
+        mpk["a_"][i] = data["a_"][i]
+    }
+   
+    return IBEenc(id, P1, mpk, AESkey)
+}
+let IBEenc = (id, P, mpk, m) => {
+    const r = new mcl.Fr()
+    r.setByCSPRNG()
+    const Q = mcl.hashAndMapToG2(id)
+    const e = mcl.pairing(mcl.mul(mpk, r), Q)
+
+    return [mcl.mul(P, r), mcl.add(m, mcl.hashToFr(e.serialize()))]
+}
 
 /*  
     署名文生成
@@ -142,7 +179,7 @@ let generateSign = (S_KEY, msg, P1, P2, k) => {
 //[(P1*H(msg)+S_KEY*H(P2*k))*inv(k), P2*k]=[S,R]
 //inv=逆関数？
 
-let signByIBS = async(msg) => {
+let signByIBS = async (msg) => {
     let P1 = getParam1();
     let P2 = getParam2();
     let k = new mcl.Fr();
@@ -151,9 +188,9 @@ let signByIBS = async(msg) => {
     console.log("idPublicKey: " + idPublicKey);
 
     let secretKey = await getSecretKey();
-    
+
     let sigInfo = {};
-    let [S,R] = generateSign(secretKey, msg, P1, P2, k);
+    let [S, R] = generateSign(secretKey, msg, P1, P2, k);
 
     sigInfo['P1'] = P1;
     sigInfo['P2'] = P2;

@@ -79,7 +79,7 @@ let getSecretKey = async(ID) => {
 //シリアライズ&デシリアライズの処理追加
 //上記と同様
 let getPublicKey = async(P1) => {
-    
+    /*
     let token = getJWT()
 
     if (token === null || typeof token === 'undefined') {
@@ -103,11 +103,15 @@ let getPublicKey = async(P1) => {
     let key = new mcl.G1()
     key.deserialize(data)
     return key
+    */
+    let key = getParam1();
+    return key;
 }
 
 //デシリアライズ処理追加&日時情報追加
 //上記と同様
 let getSecretKey2 = async(time) => {
+    /*
     let token = getJWT()
 
     if (token === null || typeof token === 'undefined') {
@@ -129,6 +133,9 @@ let getSecretKey2 = async(time) => {
     let key = new mcl.G2()
     key.deserialize(data)
     return key
+    */
+    let key = getParam2();
+    return key;
 }
 /*
 //デシリアライズ処理追加&日時情報追加

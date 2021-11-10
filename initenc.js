@@ -148,6 +148,7 @@ let initEncUI = () => {
             return
         }
         file = filedata.files[0];
+        filename=file.name
         reader = new FileReader();
         reader.readAsText(file);
         enctre_file(datetrim(dateset.value));

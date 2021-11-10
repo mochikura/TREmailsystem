@@ -252,20 +252,11 @@ let initDecUI = () => {
                     if (framedom.getElementById("tredecfile").value != "") {
                         //console.log(framedom.getElementById("ibedecfile").files[0])
                         alert(framedom.getElementById("tredecfile").files[0].name + " TREstart")
-                        let file = framedom.getElementById("tredecfile").files[0];
+                        file = framedom.getElementById("tredecfile").files[0];
+                        filename=file.name
                         reader = new FileReader();
                         reader.readAsText(file);
                         dectre_file()
-                        /*
-                        firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
-                            res.user.getIdToken().then(idToken => {
-                                localStorage.setItem('jwt', idToken.toString())
-                                alert('Successful get token')
-                            })
-                        }, err => {
-                            //alert(err.message)
-                            alert('Failed sign in')
-                        })*/
                     } else {
                         alert("ファイルが設定されていません")
                     }
@@ -312,15 +303,15 @@ let initDecUI = () => {
                     if (framedom.getElementById("ibedecfile").value != "") {
                         //console.log(framedom.getElementById("ibedecfile").files[0])
                         alert(framedom.getElementById("ibedecfile").files[0].name + " IBEstart")
-                        file = framedom.getElementById("ibedecfile").files[0];
-                        reader = new FileReader();
-                        reader.readAsText(file);
-                        decibe_file()
                         /*
                         firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
                             res.user.getIdToken().then(idToken => {
                                 localStorage.setItem('jwt', idToken.toString())
                                 alert('Successful get token')
+                                file = framedom.getElementById("ibedecfile").files[0];
+                                reader = new FileReader();
+                                reader.readAsText(file);
+                                decibe_file()
                             })
                         }, err => {
                             //alert(err.message)

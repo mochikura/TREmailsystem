@@ -14,7 +14,7 @@ let dectre_file = async () => {
 
         P1.setStr(Cstr2[1])
         dec_time = Cstr2[2]
-        if (dateget < dectime) {
+        if (dateget > dec_time) {
             alert("まだ復号できない時刻です");
             return;
         }
@@ -24,21 +24,21 @@ let dectre_file = async () => {
         var encKey = getC(Cstr[1], Cstr[2])
 
         //復号
-        let AESkey = await decKeyByTRE(encKey, time)
+        let AESkey = await decKeyByTRE(encKey, dec_time)
 
         var encfile = Cstr[0]
         var decrypted = CryptoJS.AES.decrypt(encfile, AESkey) //file type + file source.
-            .toString(CryptoJS.enc.Latin1) // -> to Latin1
-        //Latin1ってなんだよ→なにやら文字コードのことらしい
-        
+            .toString(crypto.enc.Utf8) 
+        var blob_content = new Blob([decrypted])
+
         //DLリンクを生成。
         const a = document.createElement("a")
         document.body.appendChild(a)
         a.style = "display:none"
 
-        a.href = decrypted
+        a.href = window.URL.createObjectURL(blob_content)
 
-        a.download = file.name.replace('.encrypted', '')
+        a.download = filename.replace('.encrypted', '')
         a.click()
 
     }

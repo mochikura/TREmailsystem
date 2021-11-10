@@ -86,7 +86,7 @@ let TIMEdec = (c, sk) => {
 
     return:署名文
 */
-/*
+
 let verifySign = async (msg, P1, P2, S, R, P_KEY, time) => {
     try {
         let Ppub = new mcl.G2()
@@ -115,7 +115,7 @@ let verifySign = async (msg, P1, P2, S, R, P_KEY, time) => {
         return [msg, false]
     }
 }
-*/
+
 //e(S,R)=(e(P1,P2)^H(msg))*e((H1(P_KEY),Ppub)^R)
 //署名検証かな？？
 //多分今回の場合いらない

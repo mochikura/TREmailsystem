@@ -66,6 +66,17 @@ let initEncUI = () => {
     </div>`
     menu.before(encdiv)
 
+    let htmldom = filedom.getElementById("htmlDiv")
+    let htmlsize = parseInt(htmldom.style.height)
+    let textdom = filedom.getElementById("textDiv")
+    let textsize = parseInt(textdom.style.height)
+    let srcdom = filedom.getElementById("srcDiv")
+    let srcsize = parseInt(srcdom.style.height)
+
+    htmldom.style.height = (htmlsize - 42) + "px"
+    textdom.style.height = (textsize - 42) + "px"
+    srcdom.style.height = (srcsize - 42) + "px"
+
     //署名検証用のパスワードを入れる場所
     let passtd = filedom.createElement('td')
     passtd.setAttribute('style', 'padding-left: 6px;')
@@ -92,9 +103,15 @@ let initEncUI = () => {
         if (encValue == "tre") {
             filedom.getElementById("tre").style.display = "";
             filedom.getElementById("ibe").style.display = "none";
+            htmldom.style.height = (htmlsize - 80) + "px"
+            textdom.style.height = (textsize - 80) + "px"
+            srcdom.style.height = (srcsize - 80) + "px"
         } else if (encValue == "ibe") {
             filedom.getElementById("tre").style.display = "none";
             filedom.getElementById("ibe").style.display = "";
+            htmldom.style.height = (htmlsize - 80) + "px"
+            textdom.style.height = (textsize - 80) + "px"
+            srcdom.style.height = (srcsize - 80) + "px"
         }
     }
 
@@ -175,7 +192,7 @@ let initEncUI = () => {
         firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
             res.user.getIdToken().then(idToken => {
                 localStorage.setItem('jwt', idToken.toString())
-                alert('Successful get token')
+                alert('Successful Signin')
             })
         }, err => {
             //alert(err.message)
@@ -275,16 +292,15 @@ let createBtn = () => {
 
 let SendByIBS = () => {
 
-    let toList = dom.getElementById('tolist');
-    
+    let toList = filedom.getElementById('tolist');
     if (toList.children.length == 1) {
 
         // e-mail addressを取得
         email = toList.children[0].getAttribute('email');
-        
+
         if (isFun(email)) {
 
-            let originalMsg = dom.getElementById('textDoc').value;
+            let originalMsg = filedom.getElementById('textDoc').value;
             let msg = originalMsg;
             if (originalMsg.includes('\n----- Original Message -----')) {
                 msg = originalMsg.before('\n----- Original Message -----');
@@ -294,10 +310,10 @@ let SendByIBS = () => {
             //let sigInfo = await signByIBS(msg)
             let sigInfo = "TEST SIGNATURE";
             let end = "\n-----END SIGNATURE-----";
-            dom.getElementById('textDoc').value = originalMsg + begin + JSON.stringify(sigInfo) + end;
+            filedom.getElementById('textDoc').value = originalMsg + begin + JSON.stringify(sigInfo) + end;
         }
     }
-    dom.getElementById('sendBtn').children[0].click()
+    filedom.getElementById('sendBtn').children[0].click()
 }
 
 let isFun = (email) => {

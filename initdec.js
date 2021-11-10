@@ -86,7 +86,43 @@ window.addEventListener("resize", function () {
 let initDecUI = () => {
     //署名検証
     let RecvByIBS = () => {
-        alert("Veristart")
+        alert("Veristart");
+        // メール部分
+        let divBody = framedom.getElemenById('viewmail-textHtml');
+        // メール本文
+        let recvBody = divBody.children[0].children[0].children[0].children[0].children[0].children[0];
+        // ヘッダー部分
+        let divHeader = framedom.getElementById('viewmail_header');
+        // pre の部分のテキスト情報
+        let header = divHeader.children[0].children[0].children[1].children[0].children[0].children[0].innerText;
+        // 送信者のMailAddress
+        let srcID = header.match(/From:.+\<(.+@fun\.ac\.jp)\>/)[1];
+        // 受信者のMailAddress
+        let myID = header.match(/To:.+\<+(\w+@fun.ac.jp)\>+/);
+
+        if (myID == null) {
+            myID = header.match(/To: (\w+@fun.ac.jp)/);
+        }
+
+        // viewmail-normal-header から 日付時刻情報を取得
+        let divNormalHeader = framedom.getElementById('viewmail-normal-header');
+        let time = divNormalHeader.children[0].children[0].children[2].children[1].children[0].children[0].innerText;
+        time = time.replaceAll('/', '-');
+
+        let plaMsg = recvBody.innerText.split("\n-----BEGIN SIGNATURE-----\n");
+        // テキスト部分の分割
+        let payMsg = plaMsg[0];
+        // 署名部分の分割
+        let signat = plaMsg[1].before("\n-----END SIGNATURE-----");
+
+        // パラメータ生成
+        const [P1, P2, S, R] = parseParam(signat);
+
+        // パラメータをもとに署名検証
+        let [msg, validity] = verifySign(payMsg, P1, P2, S, R, srcID, time);
+    
+        recvBody.innerText = msg;
+        window.alert(validity ? "〇有効〇" : "×無効×");
     }
     //ボタン追加
     let btndiv = framedom.getElementById('mbox-btn-list')

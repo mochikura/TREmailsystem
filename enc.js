@@ -61,6 +61,64 @@ let TIMEenc = (time, P, mpk, m) => {
 }
 //ここが暗号化本体っぽい？TREに合わせて調節しようね
 
+/*
+Cだとこんな感じだった
+
+mclBnFr_setStr(&s, s_Str, strlen(s_Str), 10);//PKG マスター鍵
+start_t = clock();
+Time_Str = Time_dec;//公開鍵
+printf("Public Key: %s\n", Time_Str);
+mclBnG1_hashAndMapTo(&Q_TIME, Time_Str, strlen(Time_Str));
+mclBnG1_mul(&S_TIME, &Q_TIME, &s);//時間鍵(秘密鍵)
+mclBnG1_getStr(buf, sizeof(buf), &S_TIME, 16);
+printf("T_TIME: %s\n",buf);
+mclBnFr_setByCSPRNG(&x);
+mclBnFr_setStr(&m, Mes, strlen(Mes), 16);
+encS_t = clock();
+C1_enc = Enc_C1(para2, x);//暗号化
+C2_enc = Enc_C2(s, Q_TIME, para2, x, m);//暗号化
+encE_t = clock();
+decS_t = clock();
+Dec = Dec_mes(S_TIME, C1_enc, C2_enc);//復号
+*/
+let encibe_file = async () => {
+    reader.onload = async function (fdata) {
+        let P1 = getParam1()
+        const key = genAESkey()
+        var id = filedom.getElementById("emailIBS")
+        const enckey = await encKeyByIBE(id, P1, key)
+        const encMsg = CryptoJS.AES.encrypt(fdata.target.result, key.getStr()).toString()
+        const encKey2 = enckey[0].serializeToHexStr() + ' ' + enckey[1].serializeToHexStr()
+        var contents = encMsg + ',' + encKey2
+        var blob_content = new Blob([contents]) //文字列で扱えるように変換
+        //DLリンクを生成
+        const a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display:none";
+        a.href = window.URL.createObjectURL(blob_content)
+        a.download = filename + '.encrypted'//file.name;
+        a.click();
+    }
+}
+
+// Enc(m) = [r P, m + h(e(r mpk, H(id)))]
+let encKeyByIBE = async (id, P1, AESkey) => {
+    let mpk = new mcl.G1()
+    const data = await getPublicKey(P1)
+    for (let i = 0; i < mpk["a_"].length; i++) {
+        mpk["a_"][i] = data["a_"][i]
+    }
+   
+    return IBEenc(id, P1, mpk, AESkey)
+}
+let IBEenc = (id, P, mpk, m) => {
+    const r = new mcl.Fr()
+    r.setByCSPRNG()
+    const Q = mcl.hashAndMapToG2(id)
+    const e = mcl.pairing(mcl.mul(mpk, r), Q)
+
+    return [mcl.mul(P, r), mcl.add(m, mcl.hashToFr(e.serialize()))]
+}
 /*  
     署名文生成
     S_KEY:秘密鍵
@@ -94,7 +152,7 @@ let generateSign = (S_KEY, msg, P1, P2, k) => {
 //[(P1*H(msg)+S_KEY*H(P2*k))*inv(k), P2*k]=[S,R]
 //inv=逆関数？
 
-let signByIBS = async(msg) => {
+let signByIBS = async (msg) => {
     let P1 = getParam1();
     let P2 = getParam2();
     let k = new mcl.Fr();
@@ -103,9 +161,9 @@ let signByIBS = async(msg) => {
     console.log("idPublicKey: " + idPublicKey);
 
     let secretKey = await getSecretKey();
-    
+
     let sigInfo = {};
-    let [S,R] = generateSign(secretKey, msg, P1, P2, k);
+    let [S, R] = generateSign(secretKey, msg, P1, P2, k);
 
     sigInfo['P1'] = P1;
     sigInfo['P2'] = P2;

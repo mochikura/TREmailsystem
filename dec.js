@@ -74,7 +74,52 @@ let TIMEdec = (c, sk) => {
     return mcl.sub(v, mcl.hashToFr(e.serialize()))
 }
 //計算式に当てはめ、参考資料を見て変えようね
-
+let decibe_file =async ()=>{
+    reader.onload =async function (fdata){
+     let cut_str = ","     //区切るやつを定義しておく。
+     let cut_str2 = "__" 
+     var Cstr =  fdata.target.result.split(cut_str);
+     var Cstr2 =Cstr[1].split(cut_str2)
+     let P1 = new mcl.G1()
+     var encKey=getC(Cstr2[0],Cstr2[1])
+     const id=framedom.getElementById("emailIBS")
+     const d = await decKeyByIBE(encKey, id)
+     var decFile=CryptoJS.AES.decrypt(Cstr[0],d.getStr())
+     var contents = decFile.toString(CryptoJS.enc.Utf8)
+     var blob_content = new Blob([contents]) //文字列で扱えるように変換
+     const a = document.createElement("a")
+     document.body.appendChild(a)
+     a.style = "display:none"
+ 
+     a.href = window.URL.createObjectURL(blob_content)
+ 
+     a.download = file.name.replace('.encrypted', '')
+     a.click()
+    }
+ }
+ let decKeyByIBE = async (encKey, ID) => {
+     let S_KEY = new mcl.G2()
+     let data = await getSecretKey(ID)
+     for (let i = 0; i < S_KEY["a_"].length; i++) {
+         S_KEY["a_"][i] = data["a_"][i]
+     }
+ 
+     return IBEdec(encKey, S_KEY).getStr()
+ }
+ let IBEdec = (c, sk) => {
+     const U = new mcl.G1()
+     const v = new mcl.Fr()
+ 
+     for (i = 0; i < U["a_"].length; i++) {
+         U["a_"][i] = c[0]["a_"][i]
+     }
+     for (i = 0; i < U["a_"].length; i++) {
+         v["a_"][i] = c[1]["a_"][i]
+     }
+ 
+     const e = mcl.pairing(U, sk)
+     return mcl.sub(v, mcl.hashToFr(e.serialize()))
+ }
 /*
     検証用署名文生成
     S_KEY:ID公開鍵

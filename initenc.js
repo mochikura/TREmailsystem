@@ -163,7 +163,7 @@ let initEncUI = () => {
         file = filedata.files[0];
         reader = new FileReader();
         reader.readAsText(file);
-        //encibe_file()
+        encibe_file()
         alert("IBEfileOK")
         /*
         firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {

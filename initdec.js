@@ -88,7 +88,7 @@ let initDecUI = () => {
     let RecvByIBS = () => {
         alert("Veristart");
         // メール部分
-        let divBody = framedom.getElemenById('viewmail-textHtml');
+        let divBody = framedom.getElementById('viewmail-textHtml');
         // メール本文
         let recvBody = divBody.children[0].children[0].children[0].children[0].children[0].children[0];
         // ヘッダー部分

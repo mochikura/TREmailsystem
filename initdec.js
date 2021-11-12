@@ -344,7 +344,6 @@ let initDecUI = () => {
                 framedom.getElementById("ibedecstart").onclick = () => {
                     if (framedom.getElementById("ibedecfile").value != "") {
                         //console.log(framedom.getElementById("ibedecfile").files[0])
-                        alert(framedom.getElementById("ibedecfile").files[0].name + " IBEstart")
                         file = framedom.getElementById("ibedecfile").files[0];
                         reader = new FileReader();
                         reader.readAsText(file);

@@ -94,7 +94,7 @@ let decibe_file = async () => {
         var contents = decFile.toString(CryptoJS.enc.Utf8)
 
         var senddom=framedom.getElementById("viewmail-normal-header").children[0].children[0].children[0].children[1].children[0].children[0].innerHTML
-        const sendID = senddom.match(/&lt;(.*)&gt;/)
+        const sendID = senddom.match(/&lt;(.*)&gt;/)[1]
         let [msg, validity] = await verifySign(decrypted, P1, P2, S, R, sendID, time)
         if(validity){
             alert("ファイルの宛先が間違っています,または選択しているメールが違います")

@@ -108,25 +108,25 @@ let initDecUI = () => {
         let divNormalHeader = framedom.getElementById('viewmail-normal-header');
         let time = divNormalHeader.children[0].children[0].children[2].children[1].children[0].children[0].innerText;
         time = time.replaceAll('/', '-');
-        
+
         let plaMsg = recvBody.innerText.split("\n-----BEGIN SIGNATURE-----\n");
-        
+
         // テキスト部分の分割
         payMsg = plaMsg[plaMsg.length - 1];
 
         // 署名部分の分割
         let signat = payMsg.replace("\n-----END SIGNATURE-----", "");
-        
+
         //署名部分のコンソール表示
         //console.log(signat);
-        
-        
+
+
         // パラメータ生成
         const [P1, P2, S, R] = parseParam(signat);
 
         // パラメータをもとに署名検証
         let [msg, validity] = verifySign(payMsg, P1, P2, S, R, srcID, time);
-    
+
         recvBody.innerText = msg;
         window.alert(validity ? "〇有効〇" : "×無効×");
     }
@@ -295,7 +295,7 @@ let initDecUI = () => {
                         //console.log(framedom.getElementById("ibedecfile").files[0])
                         alert(framedom.getElementById("tredecfile").files[0].name + " TREstart")
                         file = framedom.getElementById("tredecfile").files[0];
-                        filename=file.name
+                        filename = file.name
                         reader = new FileReader();
                         reader.readAsText(file);
                         dectre_file()
@@ -345,6 +345,10 @@ let initDecUI = () => {
                     if (framedom.getElementById("ibedecfile").value != "") {
                         //console.log(framedom.getElementById("ibedecfile").files[0])
                         alert(framedom.getElementById("ibedecfile").files[0].name + " IBEstart")
+                        file = framedom.getElementById("ibedecfile").files[0];
+                        reader = new FileReader();
+                        reader.readAsText(file);
+                        decibe_file()
                         /*
                         firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
                             res.user.getIdToken().then(idToken => {

@@ -162,10 +162,10 @@ let initEncUI = () => {
             return
         }
         file = filedata.files[0];
+        filename=file.name
         reader = new FileReader();
         reader.readAsText(file);
         encibe_file()
-        alert("IBEfileOK")
         /*
         firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
             res.user.getIdToken().then(idToken => {
@@ -199,7 +199,7 @@ let initEncUI = () => {
             //alert(err.message)
             alert('Failed sign in')
         })*/
-        alert(email + " signin")
+        //alert(email + " signin")
         if (!sendBtn_flag) {
             createBtn()
             sendBtn_flag = true;

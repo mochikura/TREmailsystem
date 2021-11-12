@@ -84,12 +84,27 @@ Dec = Dec_mes(S_TIME, C1_enc, C2_enc);//復号
 let encibe_file = async () => {
     reader.onload = async function (fdata) {
         let P1 = getParam1()
+        let P2 = getParam2()
+        let k = new mcl.Fr()
+        k.setByCSPRNG()
+        k.deserialize(k.serialize())
+
         const key = genAESkey()
-        var id = filedom.getElementById("emailIBS")
-        const enckey = await encKeyByIBE(id, P1, key)
+        var sendid = filedom.getElementById("emailIBS").value
+        let S_KEY = new mcl.G1()
+        let data = await getSecretKey(sendid)
+        for (let i = 0; i < S_KEY["a_"].length; i++) {
+            S_KEY["a_"][i] = data["a_"][i]
+        }
+        let [S, R] = generateSign(S_KEY, fdata.target.result, P1, P2, k)
+
+        var rcvid = filedom.getElementById("tolist").children[0].getAttribute('email')
+        console.log(rcvid)
+        const enckey = await encKeyByIBE(rcvid, P1, key)
         const encMsg = CryptoJS.AES.encrypt(fdata.target.result, key.getStr()).toString()
-        const encKey2 = enckey[0].serializeToHexStr() + ' ' + enckey[1].serializeToHexStr()
-        var contents = encMsg + ',' + encKey2
+        const encKey2 = enckey[0].serializeToHexStr() + '__' + enckey[1].serializeToHexStr()
+        var contents = encMsg + ',' + encKey2+ '__' + S.getStr() + '__' + R.getStr()
+        //encMsg
         var blob_content = new Blob([contents]) //文字列で扱えるように変換
         //DLリンクを生成
         const a = document.createElement("a");
@@ -108,7 +123,7 @@ let encKeyByIBE = async (id, P1, AESkey) => {
     for (let i = 0; i < mpk["a_"].length; i++) {
         mpk["a_"][i] = data["a_"][i]
     }
-   
+
     return IBEenc(id, P1, mpk, AESkey)
 }
 let IBEenc = (id, P, mpk, m) => {

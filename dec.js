@@ -72,16 +72,35 @@ let TIMEdec = (c, sk) => {
 //計算式に当てはめ、参考資料を見て変えようね
 let decibe_file = async () => {
     reader.onload = async function (fdata) {
+        
+        //encMsg,enckey[0]__enckey[1]__P1__P2__S__R
         let cut_str = ","     //区切るやつを定義しておく。
         let cut_str2 = "__"
         var Cstr = fdata.target.result.split(cut_str);
         var Cstr2 = Cstr[1].split(cut_str2)
         let P1 = new mcl.G1()
+        let P2 = new mcl.G2()
+        let S = new mcl.G1()
+        let R = new mcl.G2()
+        P1.setStr(Cstr2[2])
+        P2.setStr(Cstr2[3])
+        S.setStr(Cstr2[4])
+        R.setStr(Cstr2[5])
+
         var encKey = getC(Cstr2[0], Cstr2[1])
-        const id = framedom.getElementById("emailIBS")
-        const d = await decKeyByIBE(encKey, id)
+        const rcvid = framedom.getElementById("emailIBS")
+        const d = await decKeyByIBE(encKey, rcvid)
         var decFile = CryptoJS.AES.decrypt(Cstr[0], d)
         var contents = decFile.toString(CryptoJS.enc.Utf8)
+
+        var senddom=framedom.getElementById("viewmail-normal-header").children[0].children[0].children[0].children[1].children[0].children[0].innerHTML
+        const sendID = senddom.match(/&lt;(.*)&gt;/)
+        let [msg, validity] = await verifySign(decrypted, P1, P2, S, R, sendID, time)
+        if(validity){
+            alert("ファイルの宛先が間違っています,または選択しているメールが違います")
+            return
+        }
+
         var blob_content = new Blob([contents]) //文字列で扱えるように変換
         const a = document.createElement("a")
         document.body.appendChild(a)

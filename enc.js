@@ -82,8 +82,8 @@ let encibe_file = async () => {
         const enckey = await encKeyByIBE(rcvid, P1, key)
         const encMsg = CryptoJS.AES.encrypt(fdata.target.result, key.getStr()).toString()
         const encKey2 = enckey[0].serializeToHexStr() + '__' + enckey[1].serializeToHexStr()
-        var contents = encMsg + ',' + encKey2+ '__' + S.getStr() + '__' + R.getStr()
-        //encMsg
+        var contents = encMsg + ',' + encKey2 + '__' + P1.getStr() + '__' + P2.getStr() + '__' + S.getStr() + '__' + R.getStr()
+        //encMsg,enckey[0]__enckey[1]__P1__P2__S__R
 
         var blob_content = new Blob([contents]) //文字列で扱えるように変換
         //DLリンクを生成

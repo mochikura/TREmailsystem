@@ -28,26 +28,41 @@ let decdom, obs, iframe, framedom;
 window.onload = () => {
     mcl.init(0).then(() => {
     })
+    //initFirebase();
     let _htm = document.getElementsByTagName('html')
     decdom = _htm[0].children[1].children[0].contentWindow.document
-    //console.log(decdom)
+    console.log(decdom)
     //frameが読み込まれるたびにこのinitdecを実行する必要あり
     obs = new MutationObserver(() => { initDec() })
-    let config = { childList: true }
+    let config = {
+        childList: true,
+        subtree: true,
+        characterDataOldValue: true
+    }
     obs.observe(decdom.getElementById("contents"), config)
 }
 
 let initDec = () => {
     iframe = decdom.getElementById('viewmail-iframe')
-    //console.log(iframe);
+    console.log(iframe);
     iframe.onload = () => {
         framedom = iframe.contentWindow.document;
         initDecUI();
-        //initFirebase();
     }
-    obs.disconnect()
+    //obs.disconnect()
 }
 
+/*
+レイアウト追加処理について
+
+decdomに指定されたiframeが読み込まれるたび（厳密にはそれ以下のdom要素に変化があるたび）initDecが発動するようにする。
+manifestのall_framesがtrueなので、ページ内の全iframeにこの処理が埋め込まれる。
+decdom：対象iframe内のhtmldocumentを取得、今回の場合はメールリストとメールプレビューの部分に当たる
+obs：対象dom要素の動きを取得するもの、今回の場合はそれ以下に変化があると処理が発動する。
+iframe：メールプレビューのところのiframeが入る
+framedom：iframeのところのdocument要素
+
+*/
 let resizeflag = 0;
 //レイアウト調整用
 function decpagesize(decdomsize) {
@@ -154,9 +169,9 @@ let initDecUI = () => {
     let verihtml = `
     <div style="margin: 0 0 2px 0; padding: 5px 0 5px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB;">
     <h3 style="line-height:15px;">Veri IBE Sign in</h3><ul style="padding:2px 0 2px 0;">
-    <li style="margin-right:4px;"><input id="emailIBS" type="text" placeholder="email" style="height: 18px;" autocomplete="off"></li>
-    <li style="margin-right:4px;"><input id="passwordIBS" type="password" placeholder="Password" style="height: 18px;" autocomplete="off"></li>
-    <li style="margin-right:4px;"><a class="roundTypeBtn" id="VeriSignIn"><span class="roundTypeBtnInner">署名検証&サインイン</span></a></li>
+    <li style="margin-right:4px;"><input id="emailSign" type="text" placeholder="email" style="height: 18px;" autocomplete="off"></li>
+    <li style="margin-right:4px;"><input id="passwordSign" type="password" placeholder="Password" style="height: 18px;" autocomplete="off"></li>
+    <li style="margin-right:4px;"><a class="roundTypeBtn" id="VeriSignIn"><span class="roundTypeBtnInner">サインイン&署名検証</span></a></li>
     <li><a href="https://key.project15.tk/signup" target="_blank" rel="noopener norefferer">Sign Up</a></li></ul><br><br>
     <p id="log" style="margin-top:6px;">情報を入力してサインインしてください</p>
     </div>`
@@ -171,16 +186,23 @@ let initDecUI = () => {
         resizeflag = 2
         //署名検証場所
         framedom.getElementById("VeriSignIn").onclick = () => {
+            let emailIBS = framedom.getElementById("emailSign").value
+            let passwdIBS = framedom.getElementById("passwordSign").value
+            if (emailIBS == "") {
+                alert("IDを入力してください")
+            }
+            if (passwdIBS == "") {
+                alert("パスワードを入力してください")
+            }
             RecvByIBS()
-            console.log("Receive")
-            /*firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
+            /*firebase.auth().signInWithEmailAndPassword(emailIBS, passwdIBS).then(res => {
                 res.user.getIdToken().then(idToken => {
                     localStorage.setItem('jwt', idToken.toString())
                     RecvByIBS()
                 })
             }, err => {
                 //alert(err.message)
-                alert('Failed sign in')
+                alert('サインインに失敗しました')
             })*/
         }
     }
@@ -219,9 +241,9 @@ let initDecUI = () => {
     /*display: block; margin-block-start: 1em; margin-block: 1em; padding-inline-start: 10px; margin-inline-start:0px; margin-inline-end:0px;*/
     let ibehtml = `
     <div style="margin: 0 0 2px 0; padding: 5px 0 46px 6px; position: relative; z-index: -1; border-bottom: 1px solid #cbcbcb; background-color: #FBFBFB; line-height:26px; cursor: pointer;">
-    <h3 style="line-height:15px;">File IBE Sign in</h3><ul style="padding:2px 0 9px 0;">
-    <li style="margin-right:4px;"><input id="emailIBS" type="text" placeholder="email" style="height: 18px;" autocomplete="off"></li>
-    <li style="margin-right:4px;"><input id="passwordIBS" type="password" placeholder="Password" style="height: 18px;" autocomplete="off"></li>
+    <h3 style="line-height:15px;">IDベースファイル復号</h3><ul style="padding:2px 0 9px 0;">
+    <li style="margin-right:4px;"><input id="emailIBE" type="text" placeholder="email" style="height: 18px;" autocomplete="off"></li>
+    <li style="margin-right:4px;"><input id="passwordIBE" type="password" placeholder="Password" style="height: 18px;" autocomplete="off"></li>
     <li style="margin-right:4px;"><a class="roundTypeBtn" id="ibedecset"><span class="roundTypeBtnInner">ファイルを選択</span></a></li>
     <li style="margin-right:4px;"><a class="roundTypeBtn" id="ibedecstart"><span class="roundTypeBtnInner">サインイン&復号</span></a></li>
     <li><a href="https://key.project15.tk/signup" target="_blank" rel="noopener norefferer">Sign Up</a></li><br>
@@ -293,7 +315,7 @@ let initDecUI = () => {
                 framedom.getElementById("tredecstart").onclick = function () {
                     if (framedom.getElementById("tredecfile").value != "") {
                         //console.log(framedom.getElementById("ibedecfile").files[0])
-                        alert(framedom.getElementById("tredecfile").files[0].name + " TREstart")
+                        //alert(framedom.getElementById("tredecfile").files[0].name + " TREstart")
                         file = framedom.getElementById("tredecfile").files[0];
                         filename = file.name
                         reader = new FileReader();
@@ -338,21 +360,35 @@ let initDecUI = () => {
                     framedom.getElementById("ibedecfile").click()
                 }
                 framedom.getElementById("ibedecfile").onchange = function () {
-                    framedom.getElementById("decfilename").innerHTML = framedom.getElementById("ibedecfile").files[0].name;
+                    framedom.getElementById("decfilename").innerHTML = framedom.getElementById("ibedecfile").files[0].name
                 };
                 //ファイル復号部分
                 framedom.getElementById("ibedecstart").onclick = () => {
                     if (framedom.getElementById("ibedecfile").value != "") {
+                        let emailIBE = framedom.getElementById("emailIBE").value
+                        let passwdIBE = framedom.getElementById("passwordIBE").value
+                        if (emailIBE == "") {
+                            alert("IDを入力してください")
+                        }
+                        if (passwdIBE == "") {
+                            alert("パスワードを入力してください")
+                        }
                         //console.log(framedom.getElementById("ibedecfile").files[0])
+                        let divHeader = framedom.getElementById('viewmail_header');
+                        let senddom = divHeader.children[0].children[0].children[1].children[0].children[0].children[0].innerText
+                        const sendID = senddom.match(/From:.+\<(.+@fun\.ac\.jp)\>/)[1]
+                        if (!isFun(sendID)) {
+                            alert("送信者のemailが学内メールアドレスではありません")
+                            return
+                        }
                         file = framedom.getElementById("ibedecfile").files[0];
                         reader = new FileReader();
                         reader.readAsText(file);
                         decibe_file()
                         /*
-                        firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
+                        firebase.auth().signInWithEmailAndPassword(emailIBE, passwdIBE).then(res => {
                             res.user.getIdToken().then(idToken => {
                                 localStorage.setItem('jwt', idToken.toString())
-                                alert('Successful get token')
                                 file = framedom.getElementById("ibedecfile").files[0];
                                 reader = new FileReader();
                                 reader.readAsText(file);
@@ -360,7 +396,7 @@ let initDecUI = () => {
                             })
                         }, err => {
                             //alert(err.message)
-                            alert('Failed sign in')
+                            alert("サインインに失敗しました")
                         })*/
                     } else {
                         alert("ファイルが設定されていません")

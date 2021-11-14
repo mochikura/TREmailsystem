@@ -66,6 +66,7 @@ let initEncUI = () => {
     </div>`
     menu.before(encdiv)
 
+    //ここからレイアウト調整
     let htmldom = filedom.getElementById("htmlDiv")
     let htmlsize = parseInt(htmldom.style.height)
     let textdom = filedom.getElementById("textDiv")
@@ -148,7 +149,7 @@ let initEncUI = () => {
             return
         }
         file = filedata.files[0];
-        filename=file.name
+        filename = file.name
         reader = new FileReader();
         reader.readAsText(file);
         enctre_file(datetrim(dateset.value));
@@ -157,15 +158,41 @@ let initEncUI = () => {
     //IBEの暗号化ボタンを押したとき
     //※今後ログイン失敗時のアラートが必要
     filedom.getElementById("ibefileget").onclick = () => {
+        //let sendemail = senderWrap.children[1].children[2].children[0].innerHTML
+        let rcvemail
+        try {
+            rcvemail = filedom.getElementById("tolist").children[0].getAttribute('email')
+        } catch {
+            alert("宛先を入力してください")
+            return
+        }
+        //使い手側の例外処理
         if (filedom.getElementById("encfile").value == "") {
             alert("ファイルが選択されていません")
             return
         }
+        if (filedom.getElementById("emailIBS").value == "") {
+            alert("IDを入力してください")
+            return
+        }
+        if (filedom.getElementById("passwordIBS").value == "") {
+            alert("パスワードを入力してください")
+            return
+        }
+        if (rcvemail == "") {
+            alert("宛先を入力してください")
+            return
+        }
+        if (!isFun(rcvemail)) {
+            alert("宛先が学内メールアドレスではありません")
+            return
+        }
         file = filedata.files[0];
-        filename=file.name
+        filename = file.name
         reader = new FileReader();
         reader.readAsText(file);
         encibe_file()
+        //サインイン処理完成したらこの5行消す
         /*
         firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
             res.user.getIdToken().then(idToken => {
@@ -173,37 +200,39 @@ let initEncUI = () => {
                 let file = filedata.files[0];
                 reader = new FileReader();
                 reader.readAsText(file);
-                //encibe_file(datetrim(dateset.value));
-                alert("IBEencode_start")
+                encibe_file();
             })
         }, err => {
             //alert(err.message)
-            alert('Failed sign in')
+            alert("サインインに失敗しました")
         })*/
-        //ここにサインイン処理を追加
     }
 
     //ログイン時処理
     let sendBtn_flag = false
     filedom.getElementById("sigsignin").onclick = () => {
         //console.log(senderWrap)
-        let email = senderWrap.children[1].children[2].children[0].innerHTML
-        let passwd = document.getElementById("passwordSign")
+        let emailSign = senderWrap.children[1].children[2].children[0].innerHTML
+        let passwdSign = document.getElementById("passwordSign")
         /*
-        firebase.auth().signInWithEmailAndPassword(email, passwd).then(res => {
+        firebase.auth().signInWithEmailAndPassword(emailSign, passwdSign).then(res => {
             res.user.getIdToken().then(idToken => {
                 localStorage.setItem('jwt', idToken.toString())
-                alert('Successful Signin')
+                if (!sendBtn_flag) {
+            createBtn()
+            sendBtn_flag = true;
+        }
+                alert('サインインに成功しました')
             })
         }, err => {
             //alert(err.message)
-            alert('Failed sign in')
+            alert("サインインに失敗しました")
         })*/
         //alert(email + " signin")
         if (!sendBtn_flag) {
             createBtn()
             sendBtn_flag = true;
-        }
+        }//サインイン処理完成したら消す
     }
 }
 
@@ -317,7 +346,8 @@ let SendByIBS = () => {
     filedom.getElementById('sendBtn').children[0].click()
 }
 
+/*
 let isFun = (email) => {
     let pattern = /\w@fun.ac.jp$/
     return pattern.test(email)
-}
+}*///→index.jsに移動

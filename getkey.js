@@ -38,39 +38,33 @@ let genAESkey = () => {
 //調べたところ、JWTをlocalstorageからとってきているのはセキュリティ上良くないことが判明
 //だけど、じゃあどうやって鍵作るよ？
 
-/*
-
-*/
-
-//でもこの鍵、何に使うの？？？マスター鍵ならわかるけど、2つも必要な理由が不明
-
 let getSecretKey = async(ID) => {
-      /*
+    /*
     let token = getJWT()
 
     if (token === null || typeof token === 'undefined') {
         console.log('token is none')
         return null
     }
-    
-    let res = await axios.get('https://key.project15.tk/api/secretkey', {
-        headers: {
-            'Authorization': `Bearer ${token}`
+    try {
+        let res = await axios.get('https://key.project15.tk/api/secretkey', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        let len = Object.keys(res.data).length
+        let data = new Uint8Array(len)
+        for (i = 0; i < len; i++) {
+            data[i] = res.data[i]
         }
-    })
-    let len = Object.keys(res.data).length
-    console.log(res.data[0])
-    let data = new Uint8Array(len)//byte配列を生成してる
-    for (i = 0; i < len; i++) {
-        data[i] = res.data[i]
-    }
-    console.log(data)
-    let key = new mcl.G1()
-    key.deserialize(data)//byte列だったからデシリアライズしてもとの数字？に戻してる
-    return key
-    */
-   
-   
+        let key = new mcl.G1()
+        key.deserialize(data)
+        return key
+    } catch (e) {
+        dom.getElementById('log').innerText = e
+        return null
+    }*/
+
     //  JWT実装までのTEST秘密鍵生成
    let key = getParam1();
    return key;
@@ -81,28 +75,29 @@ let getSecretKey = async(ID) => {
 let getPublicKey = async(P1) => {
     /*
     let token = getJWT()
-
     if (token === null || typeof token === 'undefined') {
         console.log('token is none')
         return null
     }
-
-    let res = await axios.get('https://key.project15.tk/api/publickey', {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'P1': JSON.stringify(P1.serialize())//P1のパラメータを取得している、通信にどうやらJSONを使ってる模様
+    try {
+        let res = await axios.get('https://key.project15.tk/api/publickey', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'P1': JSON.stringify(P1.serialize())
+            }
+        })
+        let len = Object.keys(res.data).length
+        let data = new Uint8Array(len)
+        for (i = 0; i < len; i++) {
+            data[i] = res.data[i]
         }
-    })
-
-    let len = Object.keys(res.data).length
-    //console.log(res.data[0])
-    let data = new Uint8Array(len)
-    for (i = 0; i < len; i++) {
-        data[i] = res.data[i]
+        let key = new mcl.G1()
+        key.deserialize(data)
+        return key
+    } catch (e) {
+        dom.getElementById('log').innerText = e
+        return null
     }
-    let key = new mcl.G1()
-    key.deserialize(data)
-    return key
     */
     let key = getParam1();
     return key;
@@ -110,7 +105,7 @@ let getPublicKey = async(P1) => {
 
 //デシリアライズ処理追加&日時情報追加
 //上記と同様
-let getSecretKey2 = async(time) => {
+let getSecretKey2 = async(ID,time) => {
     /*
     let token = getJWT()
 
@@ -137,35 +132,40 @@ let getSecretKey2 = async(time) => {
     let key = getParam2();
     return key;
 }
-/*
+
 //デシリアライズ処理追加&日時情報追加
 //上記と同様
 let getPublicKey2 = async(P2, time) => {
-    
+    /*
     let token = getJWT()
-
     if (token === null || typeof token === 'undefined') {
         console.log('token is none')
         return null
     }
-    
-    let res = await axios.get('https://key.project15.tk/api/publickey2', {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'P2': JSON.stringify(P2.serialize()),
-            'time': time
+    try {
+        let res = await axios.get('https://key.project15.tk/api/publickey2', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'P2': JSON.stringify(P2.serialize()),
+                'time': time
+            }
+        })
+        let len = Object.keys(res.data).length
+        let data = new Uint8Array(len)
+        for (i = 0; i < len; i++) {
+            data[i] = res.data[i]
         }
-    })
-    let len = Object.keys(res.data).length
-    console.log(res.data[0])
-    let data = new Uint8Array(len)
-    for (i = 0; i < len; i++) {
-        data[i] = res.data[i]
+        let key = new mcl.G2()
+        key.deserialize(data)
+        return key
+    } catch (e) {
+        dom2.getElementById('log').innerText = e
+        return null
     }
-    let key = new mcl.G2()
-    key.deserialize(data)
+    */
+    let key = getParam2();
     return key
-}*/
+}
 
 let parseParam = (sig) => {
     let sigInfo = JSON.parse(sig)

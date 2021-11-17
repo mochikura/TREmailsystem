@@ -1,14 +1,14 @@
 {
-    "name":"mail encryption system",
-    "version":"0.1",
-    "description":"Mail Signature and File Encryption for FUN mail system!",
-    "manifest_version":2,
-    "content_scripts":[
+    "name": "mail encryption system",
+    "version": "0.1",
+    "description": "Mail Signature and File Encryption for FUN mail system!",
+    "manifest_version": 2,
+    "content_scripts": [
         {
-            "matches":[
+            "matches": [
                 "https://webmail.fun.ac.jp/cgi-bin/htmlparse.cgi?html=composerframe.html"
             ],
-            "js":[
+            "js": [
                 "initenc.js",
                 "mcl.js",
                 "index.js",
@@ -18,28 +18,28 @@
                 "js/crypto-js.js",
                 "js/aes.js",
                 "jquery-3.5.1.js"
-
             ],
             "run_at": "document_end",
             "all_frames": true
-        },{
-            "matches":[
-            "https://webmail.fun.ac.jp/cgi-bin/htmlparse.cgi?html=frame.html"
-        ],
-        "js":[
-            "initdec.js",
-            "mcl.js",
-            "index.js",
-            "dec.js",
-            "getkey.js",
-            "axios.js",
-            "js/crypto-js.js",
-            "js/aes.js",
-            "jquery-3.5.1.js"
-        ],
-        "run_at":"document_end",
-        "all_frmes":true
-    }
+        },
+        {
+            "matches": [
+                "https://webmail.fun.ac.jp/cgi-bin/htmlparse.cgi?html=frame.html"
+            ],
+            "js": [
+                "initdec.js",
+                "mcl.js",
+                "index.js",
+                "dec.js",
+                "getkey.js",
+                "axios.js",
+                "js/crypto-js.js",
+                "js/aes.js",
+                "jquery-3.5.1.js"
+            ],
+            "run_at": "document_end",
+            "all_frames": true
+        }
     ],
-    "content_security_policy":"script-src 'self' 'wasm-eval' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com/* https://cdn.jsdelivr.net; object-src 'self'"
+    "content_security_policy": "script-src 'self' 'wasm-eval' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com/* https://cdn.jsdelivr.net; object-src 'self'"
 }

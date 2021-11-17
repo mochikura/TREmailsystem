@@ -25,6 +25,10 @@ let dectre_file = async () => {
         //var encfile = Cstr[0]
         var decFile = CryptoJS.AES.decrypt(Cstr[0], AESkey)
         var contents = decFile.toString(CryptoJS.enc.Utf8)
+
+        //DLリンク生成確認用、後で消す
+        //contents="abcde"
+
         var blob_content = new Blob([contents])
 
         //DLリンクを生成。
@@ -50,7 +54,6 @@ let decKeyByTRE = async (encKey, time) => {
 
     return TIMEdec(encKey, S_KEY).getStr()
 }
-//サーバ班との兼ね合いもあるが、IDが鍵取得に使われているのでこれをどうにかして除かないと...
 
 //Dec(m)=C2/H(e(Tt,C1))
 
@@ -93,13 +96,22 @@ let decibe_file = async () => {
         var decFile = CryptoJS.AES.decrypt(Cstr[0], d)
         var contents = decFile.toString(CryptoJS.enc.Utf8)
 
-        var senddom=framedom.getElementById("viewmail-normal-header").children[0].children[0].children[0].children[1].children[0].children[0].innerHTML
-        const sendID = senddom.match(/&lt;(.*)&gt;/)[1]
-        let [msg, validity] = await verifySign(decrypted, P1, P2, S, R, sendID, time)
-        if(validity){
+        let divHeader = framedom.getElementById('viewmail_header');
+        let senddom = divHeader.children[0].children[0].children[1].children[0].children[0].children[0].innerText;
+        const sendID = senddom.match(/From:.+\<(.+@fun\.ac\.jp)\>/)[1]
+
+        let divNormalHeader = framedom.getElementById('viewmail-normal-header');
+        let time = divNormalHeader.children[0].children[0].children[2].children[1].children[0].children[0].innerText;
+        time = time.replaceAll('/', '-');
+
+        let [msg, validity] = await verifySign(contents, P1, P2, S, R, sendID, time)
+        if(!validity){
             alert("ファイルの宛先が間違っています,または選択しているメールが違います")
             return
         }
+
+        //DLリンク生成確認用、後で消す
+        //contents="abcde"
 
         var blob_content = new Blob([contents]) //文字列で扱えるように変換
         const a = document.createElement("a")

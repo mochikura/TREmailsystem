@@ -29,3 +29,8 @@ let dateget = () => {
 let getJWT = () => {
     return localStorage.getItem('jwt')
 }
+
+let isFun = (email) => {
+    let pattern = /\w@fun.ac.jp$/
+    return pattern.test(email)
+}

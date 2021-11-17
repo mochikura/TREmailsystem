@@ -1,4 +1,4 @@
-let initFirebase = () => {
+let initEncFirebase = () => {
     const config = {
         apiKey: "AIzaSyCUrozEOMGg8d-ctz_xDnIWPIGNbZAuPTo",
         databaseURL: "https://ibs-auth-d749c.firebaseio.com",
@@ -33,7 +33,7 @@ window.onload = () => {
     //filedomは、使用するウィンドウのdom要素
     filedom = document.getElementsByTagName('html')[0].children[1].children[0].contentWindow.document
     initEncUI();
-    //initFirebase();
+    //initEncFirebase();
 }
 
 let initEncUI = () => {
@@ -212,7 +212,7 @@ let initEncUI = () => {
     let sendBtn_flag = false
     filedom.getElementById("sigsignin").onclick = () => {
         //console.log(senderWrap)
-        let emailSign = senderWrap.children[1].children[2].children[0].innerHTML
+        let emailSign = document.getElementById("emailSign")
         let passwdSign = document.getElementById("passwordSign")
         /*
         firebase.auth().signInWithEmailAndPassword(emailSign, passwdSign).then(res => {
@@ -296,6 +296,7 @@ function getSubstring(str, string1, string2) {
 
 // by Sona34
 let createBtn = () => {
+
     let menu = filedom.getElementById('topMenu');
 
     let btns = menu.children[0];
@@ -321,27 +322,41 @@ let createBtn = () => {
 }
 
 let SendByIBS = () => {
-
-    let toList = filedom.getElementById('tolist');
+    let toList = filedom.getElementById('tolist')
+    let email
+    try {
+        email = tolist.children[0].getAttribute('email')
+    } catch {
+        alert("宛先を入力してください")
+        return
+    }
+    if (email == "") {
+        alert("宛先を入力してください")
+        return
+    }
+    if (!isFun(email)) {
+        alert("宛先が学内メールアドレスではありません")
+        return
+    }
     if (toList.children.length == 1) {
 
         // e-mail addressを取得
-        email = toList.children[0].getAttribute('email');
+        //email = toList.children[0].getAttribute('email');
 
-        if (isFun(email)) {
+        /*if (isFun(email)) {*/
 
-            let originalMsg = filedom.getElementById('textDoc').value;
-            let msg = originalMsg;
-            if (originalMsg.includes('\n----- Original Message -----')) {
-                msg = originalMsg.before('\n----- Original Message -----');
-            }
-
-            let begin = "\n-----BEGIN SIGNATURE-----\n";
-            //let sigInfo = await signByIBS(msg)
-            let sigInfo = "TEST SIGNATURE";
-            let end = "\n-----END SIGNATURE-----";
-            filedom.getElementById('textDoc').value = originalMsg + begin + JSON.stringify(sigInfo) + end;
+        let originalMsg = filedom.getElementById('textDoc').value;
+        let msg = originalMsg;
+        if (originalMsg.includes('\n----- Original Message -----')) {
+            msg = originalMsg.before('\n----- Original Message -----');
         }
+
+        let begin = "\n-----BEGIN SIGNATURE-----\n";
+        //let sigInfo = await signByIBS(msg)
+        let sigInfo = "TEST SIGNATURE";
+        let end = "\n-----END SIGNATURE-----";
+        filedom.getElementById('textDoc').value = originalMsg + begin + JSON.stringify(sigInfo) + end;
+        //}
     }
     filedom.getElementById('sendBtn').children[0].click()
 }

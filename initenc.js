@@ -324,21 +324,23 @@ let createBtn = () => {
 let SendByIBS = () => {
     let toList = filedom.getElementById('tolist')
     let email
-    try {
-        email = tolist.children[0].getAttribute('email')
-    } catch {
-        alert("宛先を入力してください")
-        return
+    for(let i = 0; i < toList.children.length; i++){
+        try {
+            email = toList.children[i].getAttribute('email')
+        } catch {
+            alert("宛先を入力してください")
+            return
+        }
+        if (email == "") {
+            alert("宛先を入力してください")
+            return
+        }
+        if (!isFun(email)) {
+            alert("宛先が学内メールアドレスではありません")
+            return
+        }
     }
-    if (email == "") {
-        alert("宛先を入力してください")
-        return
-    }
-    if (!isFun(email)) {
-        alert("宛先が学内メールアドレスではありません")
-        return
-    }
-    if (toList.children.length == 1) {
+
 
         // e-mail addressを取得
         //email = toList.children[0].getAttribute('email');
@@ -357,7 +359,7 @@ let SendByIBS = () => {
         let end = "\n-----END SIGNATURE-----";
         filedom.getElementById('textDoc').value = originalMsg + begin + JSON.stringify(sigInfo) + end;
         //}
-    }
+
     filedom.getElementById('sendBtn').children[0].click()
 }
 

@@ -319,6 +319,11 @@ let initDecUI = () => {
                         //alert(framedom.getElementById("tredecfile").files[0].name + " TREstart")
                         file = framedom.getElementById("tredecfile").files[0];
                         filename = file.name
+                        const TIMEfiletext=/.timeencrypted$/
+                        if(!TIMEfiletext.test(filename)){
+                            alert("選択ファイルが違います\n異なる暗号化方法を使用している可能性があるので確認してください。")
+                            return
+                        }
                         reader = new FileReader();
                         reader.readAsText(file);
                         dectre_file()
@@ -383,6 +388,12 @@ let initDecUI = () => {
                             return
                         }
                         file = framedom.getElementById("ibedecfile").files[0];
+                        filename = file.name
+                        const IDfiletext=/.idencrypted$/
+                        if(!IDfiletext.test(filename)){
+                            alert("選択ファイルが違います\n異なる暗号化方法を使用している可能性があるので確認してください。")
+                            return
+                        }
                         reader = new FileReader();
                         reader.readAsText(file);
                         decibe_file()

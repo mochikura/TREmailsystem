@@ -38,7 +38,7 @@ let dectre_file = async () => {
 
         a.href = window.URL.createObjectURL(blob_content)
 
-        a.download = filename.replace('.encrypted', '')
+        a.download = filename.replace('.timeencrypted', '')
         a.click()
 
     }
@@ -120,7 +120,7 @@ let decibe_file = async () => {
 
         a.href = window.URL.createObjectURL(blob_content)
 
-        a.download = file.name.replace('.encrypted', '')
+        a.download = file.name.replace('.idencrypted', '')
         a.click()
     }
 }

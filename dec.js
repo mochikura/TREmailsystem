@@ -13,7 +13,7 @@ let dectre_file = async () => {
         let dec_time
         P1.setStr(Cstr2[1])
         dec_time = Cstr2[2]
-        if (dateget > dec_time) {
+        if (dateget < dec_time) {
             alert("まだ復号できない時刻です");
             return;
         }

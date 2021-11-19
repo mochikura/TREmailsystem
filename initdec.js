@@ -39,12 +39,13 @@ window.onload = () => {
         subtree: true,
         characterDataOldValue: true
     }
+    //console.log(decdom.getElementById("contents"))
     obs.observe(decdom.getElementById("contents"), config)
 }
 
 let initDec = () => {
     iframe = decdom.getElementById('viewmail-iframe')
-    console.log(iframe);
+    //console.log(iframe);
     iframe.onload = () => {
         framedom = iframe.contentWindow.document;
         initDecUI();
@@ -153,7 +154,7 @@ let initDecUI = () => {
     IDベース署名検証
     </span></a></li>
     <li id="dec-list" class="action_mail"><a class="roundTypeBtn"><span class="roundTypeBtnInner"><span class="ico_action deep_td">
-    ファイル暗号化
+    ファイル復号
     </span></span></a></li>
     `
     btndiv.append(li)

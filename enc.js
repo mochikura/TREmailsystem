@@ -21,7 +21,7 @@ let enctre_file = async (enc_time) => {
 
         a.href = window.URL.createObjectURL(blob_content)
 
-        a.download = filename + '.encrypted';
+        a.download = filename + '.timeencrypted';
         a.click();
     }
     //reader.readAsDataURL(file);
@@ -91,7 +91,7 @@ let encibe_file = async () => {
         document.body.appendChild(a);
         a.style = "display:none";
         a.href = window.URL.createObjectURL(blob_content)
-        a.download = filename + '.encrypted'//file.name;
+        a.download = filename + '.idencrypted'//file.name;
         a.click();
     }
 }

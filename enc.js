@@ -31,7 +31,7 @@ let enctre_file = async (enc_time) => {
 // AESパスワードをタイムリリース暗号で暗号化
 let encKeyByTRE = async (enc_time, P1, AESkey) => {
     let mpk = new mcl.G1()
-    const data = await getPublicKey(P1)
+    const data = await getKtTimeKey(P1)
     for (let i = 0; i < mpk["a_"].length; i++) {
         mpk["a_"][i] = data["a_"][i]
     }
@@ -97,6 +97,7 @@ let encibe_file = async () => {
 }
 
 // Enc(m) = [r P, m + h(e(r mpk, H(id)))]
+//P1とtimeを指定する必要があるっぽい
 let encKeyByIBE = async (id, P1, AESkey) => {
     let mpk = new mcl.G1()
     const data = await getPublicKey(P1)
@@ -155,7 +156,8 @@ let signByIBS = async (msg) => {
     let idPublicKey = fileDom.getElementById('fromWrap').innerText;
     console.log("idPublicKey: " + idPublicKey);
 
-    let secretKey = await getSecretKey();
+    let secretKey = await getSecretKey(idPublicKey);
+    //引数指定する必要あり、ID
 
     let sigInfo = {};
     let [S, R] = generateSign(secretKey, msg, P1, P2, k);

@@ -1,8 +1,8 @@
-let initFirebase = () => {
+let initEncFirebase = () => {
     const config = {
-        apiKey: "AIzaSyCUrozEOMGg8d-ctz_xDnIWPIGNbZAuPTo",
-        databaseURL: "https://ibs-auth-d749c.firebaseio.com",
-        storageBucket: "ibs-auth-d749c.appspot.com",
+        apiKey: "AIzaSyCx4_OCPkQG2F7W-JJK_4cYoMYQ244ZwjE",
+        databaseURL: "https://test1-e311b-default-rtdb.firebaseio.com/",
+        storageBucket: "test1-e311b.appspot.com",
     };
     firebase.initializeApp(config);
 }

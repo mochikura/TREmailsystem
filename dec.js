@@ -47,7 +47,7 @@ let dectre_file = async () => {
 
 let decKeyByTRE = async (encKey, time) => {
     let S_KEY = new mcl.G2()
-    let data = await getSecretKey2(time)
+    let data = await getTtTimeKey(time)
     for (let i = 0; i < S_KEY["a_"].length; i++) {
         S_KEY["a_"][i] = data["a_"][i]
     }
@@ -92,7 +92,12 @@ let decibe_file = async () => {
 
         var encKey = getC(Cstr2[0], Cstr2[1])
         const rcvid = framedom.getElementById("emailIBS")
-        const d = await decKeyByIBE(encKey, rcvid)
+
+        let divNormalHeader = framedom.getElementById('viewmail-normal-header')
+        let time = divNormalHeader.children[0].children[0].children[2].children[1].children[0].children[0].innerText
+        time = time.replaceAll('/', '-')
+
+        const d = await decKeyByIBE(encKey, rcvid, time)
         var decFile = CryptoJS.AES.decrypt(Cstr[0], d)
         var contents = decFile.toString(CryptoJS.enc.Utf8)
 
@@ -100,9 +105,8 @@ let decibe_file = async () => {
         let senddom = divHeader.children[0].children[0].children[1].children[0].children[0].children[0].innerText;
         const sendID = senddom.match(/From:.+\<(.+@fun\.ac\.jp)\>/)[1]
 
-        let divNormalHeader = framedom.getElementById('viewmail-normal-header');
-        let time = divNormalHeader.children[0].children[0].children[2].children[1].children[0].children[0].innerText;
-        time = time.replaceAll('/', '-');
+        //var encfile = Cstr[0]
+        //var decrypted = CryptoJS.AES.decrypt(encfile, AESkey).toString(CryptoJS.enc.Utf8)
 
         let [msg, validity] = await verifySign(contents, P1, P2, S, R, sendID, time)
         if(!validity){
@@ -124,9 +128,9 @@ let decibe_file = async () => {
         a.click()
     }
 }
-let decKeyByIBE = async (encKey, ID) => {
+let decKeyByIBE = async (encKey, ID, time) => {
     let S_KEY = new mcl.G2()
-    let data = await getSecretKey(ID)
+    let data = await getSecretKey2(ID, time)
     for (let i = 0; i < S_KEY["a_"].length; i++) {
         S_KEY["a_"][i] = data["a_"][i]
     }

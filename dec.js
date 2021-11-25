@@ -1,6 +1,3 @@
-//予想ではあるが、encodeの時点で、encfile自体に署名を設けることで、そのファイル自体が本当に自分宛てのものであるのかそうでないかを判別する。
-//今回のタイムリリースの場合相手ではなく時間で暗号を設けるので、今回はその部分を除く必要がありそう。
-//myIDとscrIDの宣言あり
 let dectre_file = async () => {
     reader.onload = async function (fdata) {
         //var contents = encMsg + ',' + encKey + '__' + P1.getStr() + '__' + enc_time
@@ -157,7 +154,6 @@ let IBEdec = (c, sk) => {
     msg  :本文
     P1   :公開パラメータ1
     P2   :公開パラメータ2
-    Ppub :PKG公開鍵
     k    :ランダム数字
 
     return:署名文
@@ -193,8 +189,6 @@ let verifySign = async (msg, P1, P2, S, R, P_KEY, time) => {
 }
 
 //e(S,R)=(e(P1,P2)^H(msg))*e((H1(P_KEY),Ppub)^R)
-//署名検証かな？？
-//多分今回の場合いらない
 
 // パスワードを取得する(復号用)
 function getC(str1, str2) {

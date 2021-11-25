@@ -3,15 +3,13 @@ let enctre_file = async (enc_time) => {
     reader.onload = async function (fdata) {
         let P1 = getParam1()
         const key = genAESkey() //mcl::Fr
-        //なぜここでも鍵を作ってる？
         const encKey = await encKeyByTRE(enc_time, P1, key) //[IDdecに必要な情報, IDencされた鍵]
-        //鍵を暗号化している？
+        //鍵を暗号化している
         const encMsg = CryptoJS.AES.encrypt(fdata.target.result, key.getStr())
-        //ここで中身の暗号化？
+        //ここで中身の暗号化
         var contents = encMsg + ',' + encKey
             + '__' + P1.getStr() + '__' + enc_time//+ '__' + P2.getStr() + '__' + S.getStr() + '__' + R.getStr()
-        //暗号化されたデータとパスワードを結合
-        //↑パスワードだけじゃなくてパラメータも暗号化してね？
+        //暗号化されたデータと暗号化された鍵、各パラメータを結合
         var blob_content = new Blob([contents]) //文字列で扱えるように変換
 
         //DLリンクを生成
@@ -38,7 +36,7 @@ let encKeyByTRE = async (enc_time, P1, AESkey) => {
 
     return TIMEenc(enc_time, P1, mpk, AESkey)
 }
-//MPKとは？？、予想：MasterPublicKey
+//MPKとはMasterPublicKey
 
 //Enc(m)=[xP, m*H(e(Pt,xKt))]=(C1,C2)
 //Kt=sPa
@@ -97,7 +95,6 @@ let encibe_file = async () => {
 }
 
 // Enc(m) = [r P, m + h(e(r mpk, H(id)))]
-//P1とtimeを指定する必要があるっぽい
 let encKeyByIBE = async (id, P1, AESkey) => {
     let mpk = new mcl.G1()
     const data = await getPublicKey(P1)
@@ -142,11 +139,9 @@ let generateSign = (S_KEY, msg, P1, P2, k) => {
 
     return [S_G1, R_G2]
 }
-//なにこれ？？？署名を生成してるっぽいけど...恐らく認証に使ってた可能性
-//どうやらP2は署名のみに必要なパラメータっぽい
 
 //[(P1*H(msg)+S_KEY*H(P2*k))*inv(k), P2*k]=[S,R]
-//inv=逆関数？
+//inv=逆関数
 
 let signByIBS = async (msg) => {
     let P1 = getParam1();
@@ -157,7 +152,6 @@ let signByIBS = async (msg) => {
     console.log("idPublicKey: " + idPublicKey);
 
     let secretKey = await getSecretKey(idPublicKey);
-    //引数指定する必要あり、ID
 
     let sigInfo = {};
     let [S, R] = generateSign(secretKey, msg, P1, P2, k);

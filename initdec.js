@@ -172,8 +172,7 @@ let initDecUI = () => {
     <h3 style="line-height:15px;">Veri IBE Sign in</h3><ul style="padding:2px 0 2px 0;">
     <li style="margin-right:4px;"><input id="emailSign" type="text" placeholder="email" style="height: 18px;" autocomplete="off"></li>
     <li style="margin-right:4px;"><input id="passwordSign" type="password" placeholder="Password" style="height: 18px;" autocomplete="off"></li>
-    <li style="margin-right:4px;"><a class="roundTypeBtn" id="VeriSignIn"><span class="roundTypeBtnInner">サインイン&署名検証</span></a></li>
-    <li><a href="https://key.project15.tk/signup" target="_blank" rel="noopener norefferer">Sign Up</a></li></ul><br><br>
+    <li style="margin-right:4px;"><a class="roundTypeBtn" id="VeriSignIn"><span class="roundTypeBtnInner">サインイン&署名検証</span></a></li></ul><br><br>
     <p id="log" style="margin-top:6px;">情報を入力してサインインしてください</p>
     </div>`
     //ボタン押したらこのレイアウトが追加される

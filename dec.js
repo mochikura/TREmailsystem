@@ -1,6 +1,3 @@
-//予想ではあるが、encodeの時点で、encfile自体に署名を設けることで、そのファイル自体が本当に自分宛てのものであるのかそうでないかを判別する。
-//今回のタイムリリースの場合相手ではなく時間で暗号を設けるので、今回はその部分を除く必要がありそう。
-//myIDとscrIDの宣言あり
 let dectre_file = async () => {
     reader.onload = async function (fdata) {
         //var contents = encMsg + ',' + encKey + '__' + P1.getStr() + '__' + enc_time
@@ -47,7 +44,7 @@ let dectre_file = async () => {
 
 let decKeyByTRE = async (encKey, time) => {
     let S_KEY = new mcl.G2()
-    let data = await getSecretKey2(time)
+    let data = await getTtTimeKey(time)
     for (let i = 0; i < S_KEY["a_"].length; i++) {
         S_KEY["a_"][i] = data["a_"][i]
     }
@@ -92,7 +89,12 @@ let decibe_file = async () => {
 
         var encKey = getC(Cstr2[0], Cstr2[1])
         const rcvid = framedom.getElementById("emailIBS")
-        const d = await decKeyByIBE(encKey, rcvid)
+
+        let divNormalHeader = framedom.getElementById('viewmail-normal-header')
+        let time = divNormalHeader.children[0].children[0].children[2].children[1].children[0].children[0].innerText
+        time = time.replaceAll('/', '-')
+
+        const d = await decKeyByIBE(encKey, rcvid, time)
         var decFile = CryptoJS.AES.decrypt(Cstr[0], d)
         var contents = decFile.toString(CryptoJS.enc.Utf8)
 
@@ -100,9 +102,8 @@ let decibe_file = async () => {
         let senddom = divHeader.children[0].children[0].children[1].children[0].children[0].children[0].innerText;
         const sendID = senddom.match(/From:.+\<(.+@fun\.ac\.jp)\>/)[1]
 
-        let divNormalHeader = framedom.getElementById('viewmail-normal-header');
-        let time = divNormalHeader.children[0].children[0].children[2].children[1].children[0].children[0].innerText;
-        time = time.replaceAll('/', '-');
+        //var encfile = Cstr[0]
+        //var decrypted = CryptoJS.AES.decrypt(encfile, AESkey).toString(CryptoJS.enc.Utf8)
 
         let [msg, validity] = await verifySign(contents, P1, P2, S, R, sendID, time)
         if(!validity){
@@ -124,9 +125,9 @@ let decibe_file = async () => {
         a.click()
     }
 }
-let decKeyByIBE = async (encKey, ID) => {
+let decKeyByIBE = async (encKey, ID, time) => {
     let S_KEY = new mcl.G2()
-    let data = await getSecretKey(ID)
+    let data = await getSecretKey2(ID, time)
     for (let i = 0; i < S_KEY["a_"].length; i++) {
         S_KEY["a_"][i] = data["a_"][i]
     }
@@ -153,7 +154,6 @@ let IBEdec = (c, sk) => {
     msg  :本文
     P1   :公開パラメータ1
     P2   :公開パラメータ2
-    Ppub :PKG公開鍵
     k    :ランダム数字
 
     return:署名文
@@ -189,8 +189,6 @@ let verifySign = async (msg, P1, P2, S, R, P_KEY, time) => {
 }
 
 //e(S,R)=(e(P1,P2)^H(msg))*e((H1(P_KEY),Ppub)^R)
-//署名検証かな？？
-//多分今回の場合いらない
 
 // パスワードを取得する(復号用)
 function getC(str1, str2) {
